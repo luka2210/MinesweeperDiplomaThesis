@@ -10,8 +10,6 @@ import javax.swing.JTextField;
 
 import inpututils.JTextFieldDocument;
 
-import javax.swing.JOptionPane;
-
 import java.awt.Button;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,14 +20,15 @@ import java.awt.Font;
 
 public class SelectionWindow {
 	
-	private final static int MIN_ROWS_INPUT = 1, MAX_ROWS_INPUT = 50;
-	private static final int MIN_COLS_INPUT = 1, MAX_COLS_INPUT = 50;
-	private final static int MIN_MINES_INPUT = 1, MAX_MINES_INPUT = MAX_ROWS_INPUT * MAX_COLS_INPUT;
+	private final static Integer NUM_ROWS_EASY = 9, NUM_COLS_EASY = 9, NUM_MINES_EASY = 10;
+	private final static Integer NUM_ROWS_MEDIUM = 16, NUM_COLS_MEDIUM = 16, NUM_MINES_MEDIUM = 40;
+	private final static Integer NUM_ROWS_HARD = 16, NUM_COLS_HARD = 30, NUM_MINES_HARD = 99;
+	
+	private final static Integer MIN_ROWS = 9, MAX_ROWS = 50;
+	private final static Integer MIN_COLS = 9, MAX_COLS = 50;
+	private final static Integer MIN_MINES = 1, MAX_MINES = MAX_ROWS * MAX_COLS;
 	
 	private JFrame frame;
-	
-	private JTextField numRowsInputField, numColumnsInputField, numMinesInputField;
-	
 	
 	/**
 	 * Launch the application.
@@ -64,29 +63,26 @@ public class SelectionWindow {
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
-		numRowsInputField = new JTextField(0);
-		numRowsInputField.setDocument(new JTextFieldDocument(MIN_ROWS_INPUT, MAX_ROWS_INPUT));
+		JTextField numRowsInputField = new JTextField(0);
+		numRowsInputField.setDocument(new JTextFieldDocument(1, MAX_ROWS));
 		numRowsInputField.setText("20");
 		numRowsInputField.setFont(new Font("Dialog", Font.PLAIN, 20));
 		numRowsInputField.setBounds(208, 255, 35, 25);
 		frame.getContentPane().add(numRowsInputField);
-        //((AbstractDocument) numRowsInputField.getDocument()).setDocumentFilter(new NumberDocumentFilter());
 		
-		numColumnsInputField = new JTextField(0);
-		numColumnsInputField.setDocument(new JTextFieldDocument(MIN_COLS_INPUT, MAX_COLS_INPUT));
+		JTextField numColumnsInputField = new JTextField(0);
+		numColumnsInputField.setDocument(new JTextFieldDocument(1, MAX_COLS));
 		numColumnsInputField.setText("30");
 		numColumnsInputField.setFont(new Font("Dialog", Font.PLAIN, 20));
 		numColumnsInputField.setBounds(310, 255, 35, 25);
 		frame.getContentPane().add(numColumnsInputField);
-		//((AbstractDocument) numColumnsInputField.getDocument()).setDocumentFilter(new NumberDocumentFilter());
 		
-		numMinesInputField = new JTextField(0);
-		numMinesInputField.setDocument(new JTextFieldDocument(MIN_MINES_INPUT, MAX_MINES_INPUT));
+		JTextField numMinesInputField = new JTextField(0);
+		numMinesInputField.setDocument(new JTextFieldDocument(1, MAX_MINES));
 		numMinesInputField.setText("145");
 		numMinesInputField.setFont(new Font("Dialog", Font.PLAIN, 20));
 		numMinesInputField.setBounds(405, 255, 45, 25);
 		frame.getContentPane().add(numMinesInputField);
-		//((AbstractDocument) numMinesInputField.getDocument()).setDocumentFilter(new NumberDocumentFilter());
 		
 		Panel titlePanel = new Panel();
 		titlePanel.setBackground(new Color(0, 102, 255));
@@ -148,47 +144,47 @@ public class SelectionWindow {
 	    group.add(radioCustom);
 	    radioBegginer.setSelected(true);
 		
-		JLabel lblBegginerHeight = new JLabel("9");
+		JLabel lblBegginerHeight = new JLabel(NUM_ROWS_EASY.toString());
 		lblBegginerHeight.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblBegginerHeight.setBounds(220, 115, 35, 35);
 		frame.getContentPane().add(lblBegginerHeight);
 		
-		JLabel lblBegginerWidth = new JLabel("9");
+		JLabel lblBegginerWidth = new JLabel(NUM_COLS_EASY.toString());
 		lblBegginerWidth.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblBegginerWidth.setBounds(320, 115, 35, 35);
 		frame.getContentPane().add(lblBegginerWidth);
 		
-		JLabel lblBegginerMines = new JLabel("10");
+		JLabel lblBegginerMines = new JLabel(NUM_MINES_EASY.toString());
 		lblBegginerMines.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblBegginerMines.setBounds(410, 115, 35, 35);
 		frame.getContentPane().add(lblBegginerMines);
 		
-		JLabel lblExpertHeight = new JLabel("16");
-		lblExpertHeight.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblExpertHeight.setBounds(210, 205, 35, 35);
-		frame.getContentPane().add(lblExpertHeight);
-		
-		JLabel lblInterWidth = new JLabel("16");
-		lblInterWidth.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblInterWidth.setBounds(311, 160, 35, 35);
-		frame.getContentPane().add(lblInterWidth);
-		
-		JLabel lblExpertWidth = new JLabel("40");
-		lblExpertWidth.setFont(new Font("Dialog", Font.PLAIN, 20));
-		lblExpertWidth.setBounds(311, 205, 35, 35);
-		frame.getContentPane().add(lblExpertWidth);
-		
-		JLabel lblInterHeight = new JLabel("16");
+		JLabel lblInterHeight = new JLabel(NUM_ROWS_MEDIUM.toString());
 		lblInterHeight.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblInterHeight.setBounds(210, 160, 35, 35);
 		frame.getContentPane().add(lblInterHeight);
 		
-		JLabel lblInterMines = new JLabel("40");
+		JLabel lblInterWidth = new JLabel(NUM_COLS_MEDIUM.toString());
+		lblInterWidth.setFont(new Font("Dialog", Font.PLAIN, 20));
+		lblInterWidth.setBounds(310, 160, 35, 35);
+		frame.getContentPane().add(lblInterWidth);
+		
+		JLabel lblInterMines = new JLabel(NUM_MINES_MEDIUM.toString());
 		lblInterMines.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblInterMines.setBounds(410, 160, 35, 35);
 		frame.getContentPane().add(lblInterMines);
 		
-		JLabel lblExpertMines = new JLabel("99");
+		JLabel lblExpertHeight = new JLabel(NUM_ROWS_HARD.toString());
+		lblExpertHeight.setFont(new Font("Dialog", Font.PLAIN, 20));
+		lblExpertHeight.setBounds(210, 205, 35, 35);
+		frame.getContentPane().add(lblExpertHeight);
+		
+		JLabel lblExpertWidth = new JLabel(NUM_COLS_HARD.toString());
+		lblExpertWidth.setFont(new Font("Dialog", Font.PLAIN, 20));
+		lblExpertWidth.setBounds(311, 205, 35, 35);
+		frame.getContentPane().add(lblExpertWidth);
+		
+		JLabel lblExpertMines = new JLabel(NUM_MINES_HARD.toString());
 		lblExpertMines.setFont(new Font("Dialog", Font.PLAIN, 20));
 		lblExpertMines.setBounds(410, 205, 35, 35);
 		frame.getContentPane().add(lblExpertMines);
@@ -209,51 +205,53 @@ public class SelectionWindow {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (radioBegginer.isSelected()) 
-					otvoriGlavniProzor(9, 9, 10);
+					openGameWindow(NUM_ROWS_EASY, NUM_COLS_EASY, NUM_MINES_EASY);
 				else if (radioIntermediate.isSelected())
-					otvoriGlavniProzor(16, 16, 40);
+					openGameWindow(NUM_ROWS_MEDIUM, NUM_COLS_MEDIUM, NUM_MINES_MEDIUM);
 				else if (radioExpert.isSelected()) 
-					otvoriGlavniProzor(16, 30, 99);
-				else 
-					proveriUnos();
+					openGameWindow(NUM_ROWS_HARD, NUM_COLS_HARD, NUM_MINES_HARD);
+				else
+					checkInput(numRowsInputField.getText(), 
+							numColumnsInputField.getText(), 
+							numMinesInputField.getText());
 			}
 		});
 	}
 	
 	
-	private void otvoriGlavniProzor(int m, int n, int brMina) {
-		//GlavniProzor gp = new GlavniProzor(m, n, brMina, 100, 100);
+	private void openGameWindow(int numRows, int numColumns, int numMines) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GameWindow window = new GameWindow(numRows, numColumns, numMines);
+					window.getFrame().setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
-	private void proveriUnos() {
-		try {
-			if (numRowsInputField.getText().isBlank() || numColumnsInputField.getText().isBlank() || numMinesInputField.getText().isBlank()) 
-				throw new Exception("Нисте попунили сва поља!");
-			
-			int m = Integer.parseInt(numRowsInputField.getText());
-			int n = Integer.parseInt(numColumnsInputField.getText());
-			int brMina = Integer.parseInt(numMinesInputField.getText());
-			
-			if (!(inRange(m, 10, 30))) 
-				throw new Exception("Висина табле мора бити цео број између 10 и 30.");
-			if (!(inRange(n, 10, 50))) 
-				throw new Exception("Ширина табле мора бити цео број између 10 и 50.");
-			if (brMina > 999) 
-				throw new Exception("Број мина не сме бити већи од 999.");
-			if (!(inRange(brMina, 1, n * m - 9))) 
-				throw new Exception("Број мина за унете димензије табле мора бити цео број између 1 и " + (n * m - 9) + ".");
-			
-			otvoriGlavniProzor(m, n, brMina);
-		}
-		catch (NumberFormatException err) {
-			JOptionPane.showMessageDialog(null, "Унете вредности морају бити цели бројеви.", "Грешка уноса", JOptionPane.INFORMATION_MESSAGE);
-		}
-		catch (Exception err) {
-			JOptionPane.showMessageDialog(null, err.getMessage(), "Грешка уноса", JOptionPane.INFORMATION_MESSAGE);
-		}
+	private void checkInput(String numRowsStr, String numColumnsStr, String numMinesStr) {
+		if (numRowsStr.isBlank()) 
+			numRowsStr = MIN_ROWS.toString();
+		if (numColumnsStr.isBlank())
+			numColumnsStr = MIN_COLS.toString();
+		if (numMinesStr.isBlank())
+			numMinesStr = MIN_MINES.toString();
+		
+		int numRows = inRange(Integer.parseInt(numRowsStr), MIN_ROWS, MAX_ROWS);
+		int numColumns = inRange(Integer.parseInt(numColumnsStr), MIN_COLS, MAX_COLS);
+		int numMines = inRange(Integer.parseInt(numMinesStr), MIN_MINES, Math.min(numRows * numColumns, MAX_MINES));
+		
+		openGameWindow(numRows, numColumns, numMines);
 	}
 	
-	private boolean inRange(int num, int min, int max) {
-		return num >= min && num <= max;
+	private int inRange(int num, int min, int max) {
+		if (num < min)
+			return min;
+		if (num > max)
+			return max;
+		return num;
 	}
 }
