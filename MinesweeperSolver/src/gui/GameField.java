@@ -47,9 +47,7 @@ public class GameField {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if (opened || marked) 
-					return;
-				fieldFrame.setIcon(ImageLoader.FIELDS[0]);
+				listener.leftClickPressed(i, j);
 			}
 			
 			@Override

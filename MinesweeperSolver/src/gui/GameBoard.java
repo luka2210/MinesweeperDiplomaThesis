@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import eventlistener.GameFieldEventListener;
 import gamelogic.Board;
+import imageutil.ImageLoader;
 
 
 public class GameBoard implements GameFieldEventListener {
@@ -116,5 +117,21 @@ public class GameBoard implements GameFieldEventListener {
 		
 		if (field.getNgbMines() == counter)
 			openAllNeighbors(row, col);
+	}
+
+	@Override
+	public void leftClickPressed(int row, int col) {
+		GameField field = fields[row][col];
+		if (field.isOpened() || field.isMarked() || gameOver) 
+			return;
+		field.getFieldFrame().setIcon(ImageLoader.FIELDS[0]);
+	}
+
+	@Override
+	public void leftClickReleased(int row, int col) {
+		GameField field = fields[row][col];
+		if (field.isOpened() || field.isMarked() || gameOver) 
+			return;
+		field.getFieldFrame().setIcon(ImageLoader.FIELD);
 	}
 }
