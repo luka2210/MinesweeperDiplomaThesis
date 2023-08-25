@@ -223,7 +223,7 @@ public class SelectionWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameWindow window = new GameWindow(numRows, numColumns, numMines);
+					GameWindow window = new GameWindow(numRows, numColumns, numMines, 500, 500);
 					window.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
