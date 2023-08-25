@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import eventlistener.GameFieldEventListener;
 import gamelogic.Board;
 
+
 public class GameBoard implements GameFieldEventListener {
 	
 	public static final int FIELD_HEIGHT = 20, FIELD_WIDTH = 20;
@@ -15,21 +16,24 @@ public class GameBoard implements GameFieldEventListener {
 	
 	private JPanel panel;
 	
+	private boolean firstClick, gameOver, gameWon;
+	
 	public GameBoard(int numRows, int numColumns, int numMines) {
 		this.numRows = numRows;
 		this.numColumns = numColumns;
 		this.numMines = numMines;
+		this.firstClick = true;
+		this.gameOver = false;
+		this.gameWon = false;
 		fields = initFields();
 		initialize();
 	}
 	
 	public GameField[][] initFields() {	
-		int[][] board = Board.initBoard(numRows, numColumns, numMines);
-		
 		GameField[][] fields = new GameField[numRows][numColumns];
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
-				fields[i][j] = new GameField(i, j, board[i][j] == -1, board[i][j], FIELD_HEIGHT, FIELD_WIDTH, this);
+				fields[i][j] = new GameField(i, j, FIELD_HEIGHT, FIELD_WIDTH, this);
 		
 		return fields;
 	}
@@ -47,22 +51,70 @@ public class GameBoard implements GameFieldEventListener {
 	public JPanel getPanel() {
 		return panel;
 	}
-
+	
 	@Override
-	public void leftClick(int i, int j) {
-		// TODO Auto-generated method stub
+	public void leftClick(int row, int col) {
+		GameField field = fields[row][col];
 		
+		if (field.isOpened() || field.isMarked() || gameOver)
+			return;
+		
+		if (firstClick) {
+			assignMines(row, col);
+			firstClick = false;
+		}
+		
+		field.open();
+		
+		gameOver = field.isMine();
+		if (gameOver) {
+			return;
+		}
+		
+		if (field.getNgbMines() == 0)
+			openAllNeighbors(row, col);
+	}
+	
+	private void assignMines(int row, int col) {
+		int[][] board = Board.initBoard(numRows, numColumns, numMines, row, col);
+		
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++) {
+				fields[i][j].setMine(board[i][j] == -1);
+				fields[i][j].setNgbMines(board[i][j]);
+			}
+	}
+	
+	private void openAllNeighbors(int row, int col) {
+		for (int x = row - 1; x < row + 2; x++)
+			for (int y = col - 1; y < col + 2; y++)
+				if (x >= 0 && x < numRows && y >= 0 && y < numColumns && !fields[x][y].isOpened())
+					leftClick(x, y);
+	}
+	
+	@Override
+	public void rightClick(int row, int col) {
+		GameField field = fields[row][col];
+		
+		if (field.isOpened() || gameOver)
+			return;
+		field.changeMarked();
 	}
 
 	@Override
-	public void rightClick(int i, int j) {
-		// TODO Auto-generated method stub
+	public void middleClick(int row, int col) {
+		GameField field = fields[row][col];
 		
-	}
-
-	@Override
-	public void middleClick(int i, int j) {
-		// TODO Auto-generated method stub
+		if (!field.isOpened() || field.isMarked() || gameOver)
+			return;
 		
+		int counter = 0;
+		for (int x = row - 1; x < row + 2; x++)
+			for (int y = col - 1; y < col + 2; y++)
+				if (x >= 0 && x < numRows && y >= 0 && y < numColumns && fields[x][y].isMarked())
+					counter++;
+		
+		if (field.getNgbMines() == counter)
+			openAllNeighbors(row, col);
 	}
 }

@@ -8,14 +8,17 @@ import gui.GameField;
 
 public class Board {
 	
-	public static int[][] initBoard(int numRows, int numColumns, int numMines) {
+	public static int[][] initBoard(int numRows, int numColumns, int numMines, int row, int col) {
+		Coordinate coordAvoid = new Coordinate(row, col);
+		
 		int[][] board = new int[numRows][numColumns]; 
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
 				board[i][j] = 0;
 		
 		// put mines randomly all over the board
-		ArrayList<Integer> mineIndexes = RandomUniqueNumbers.generate(numRows * numColumns, numMines);
+		int indexAvoid = CoordinateToIndex(coordAvoid, numColumns);
+		ArrayList<Integer> mineIndexes = RandomUniqueNumbers.generate(numRows * numColumns, numMines, indexAvoid);
 		
 		for (int mineIndex: mineIndexes) {
 			Coordinate coord = indexToCoordinate(mineIndex, numColumns);
@@ -35,12 +38,16 @@ public class Board {
 	private static void countMines(int[][] board, int i, int j, int numRows, int numColumns) {
 		for (int x = i - 1; x < i + 2; x++)
 			for (int y = j - 1; y < j + 2; y++)
-				if (x > 0 && x < numRows && y > 0 && y < numColumns && board[x][y] == -1)
+				if (x >= 0 && x < numRows && y >= 0 && y < numColumns && board[x][y] == -1)
 					board[i][j] += 1;
 	}
 	
 	private static Coordinate indexToCoordinate(int index, int numColumns) {
 		return new Coordinate(index / numColumns, index % numColumns);
+	}
+	
+	private static int CoordinateToIndex(Coordinate coord, int numColumns) {
+		return coord.getI() * numColumns + coord.getJ();
 	}
 	
 	private static void printBoard(int[][] board, int numRows, int numColumns) {

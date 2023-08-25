@@ -5,10 +5,11 @@ import java.util.Collections;
 
 public class RandomUniqueNumbers {
 	
-	public static ArrayList<Integer> generate(int size, int n) {
-		ArrayList<Integer> allNumbers = new ArrayList<Integer>(size);
+	public static ArrayList<Integer> generate(int size, int n, int numAvoid) {
+		ArrayList<Integer> allNumbers = new ArrayList<Integer>(size - 1);
 		for (int i = 0; i < size; i++)
-			allNumbers.add(i);
+			if (i != numAvoid)
+				allNumbers.add(i);
 		
 		Collections.shuffle(allNumbers);
 		

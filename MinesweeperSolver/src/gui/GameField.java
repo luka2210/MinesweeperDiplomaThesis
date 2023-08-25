@@ -19,12 +19,10 @@ public class GameField {
 	private int fieldHeight, fieldWidth;
 	private GameFieldEventListener listener;
 	
-	public GameField(int i, int j, boolean mine, int ngbMines, int fieldHeight, int fieldWidth, 
+	public GameField(int i, int j, int fieldHeight, int fieldWidth, 
 			GameFieldEventListener listener) {
 		this.i = i;
 		this.j = j;
-		this.mine = mine;
-		this.ngbMines = ngbMines;
 		this.opened = false;
 		this.marked = false;
 		this.fieldHeight = fieldHeight;
@@ -49,14 +47,14 @@ public class GameField {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if (opened) 
+				if (opened || marked) 
 					return;
 				fieldFrame.setIcon(ImageLoader.FIELDS[0]);
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (opened) 
+				if (opened || marked) 
 					return;
 				fieldFrame.setIcon(ImageLoader.FIELD);
 			}
@@ -85,6 +83,14 @@ public class GameField {
 		return fieldFrame;
 	}
 
+	public void setMine(boolean mine) {
+		this.mine = mine;
+	}
+
+	public void setNgbMines(int ngbMines) {
+		this.ngbMines = ngbMines;
+	}
+
 	public void changeMarked() {
 		marked = !marked;
 		if (marked) 
@@ -93,12 +99,11 @@ public class GameField {
 			fieldFrame.setIcon(ImageLoader.FIELD);
 	}
 	
-	public boolean open() {
+	public void open() {
 		opened = true;
 		if (mine)
 			fieldFrame.setIcon(ImageLoader.FIELD_MINE_CLICKED);
 		else 
 			fieldFrame.setIcon(ImageLoader.FIELDS[ngbMines]);
-		return mine;
 	}
 }
