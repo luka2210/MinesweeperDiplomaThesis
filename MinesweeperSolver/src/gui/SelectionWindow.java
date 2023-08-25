@@ -8,7 +8,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import inpututils.JTextFieldDocument;
+import inpututil.JTextFieldDocument;
 
 import java.awt.Button;
 import java.awt.event.MouseAdapter;
