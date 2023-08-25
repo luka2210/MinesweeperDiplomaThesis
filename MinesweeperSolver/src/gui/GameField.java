@@ -14,9 +14,9 @@ public class GameField {
 	private boolean mine;
 	private int ngbMines;
 	private boolean opened, marked;
-	private int fieldHeight, fieldWidth, heightOffset;
+	private int fieldHeight, fieldWidth;
 	
-	public GameField(int i, int j, boolean mine, int ngbMines, int fieldHeight, int fieldWidth, int heightOffset) {
+	public GameField(int i, int j, boolean mine, int ngbMines, int fieldHeight, int fieldWidth) {
 		this.i = i;
 		this.j = j;
 		this.mine = mine;
@@ -25,7 +25,6 @@ public class GameField {
 		this.marked = false;
 		this.fieldHeight = fieldHeight;
 		this.fieldWidth = fieldWidth;
-		this.heightOffset = heightOffset;
 		this.fieldFrame = initFieldFrame();
 	}
 	
@@ -52,7 +51,7 @@ public class GameField {
 				fieldFrame.setIcon(ImageLoader.FIELD);
 			}
 		});
-		fieldFrame.setBounds(j * fieldWidth, i * fieldHeight + heightOffset, fieldWidth, fieldHeight);
+		fieldFrame.setBounds(j * fieldWidth, i * fieldHeight, fieldWidth, fieldHeight);
 		return fieldFrame;
 	}
 	

@@ -28,7 +28,7 @@ public class GameBoard {
 		GameField[][] fields = new GameField[numRows][numColumns];
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
-				fields[i][j] = new GameField(i, j, board[i][j] == -1, board[i][j], FIELD_HEIGHT, FIELD_WIDTH, 0);
+				fields[i][j] = new GameField(i, j, board[i][j] == -1, board[i][j], FIELD_HEIGHT, FIELD_WIDTH);
 		
 		return fields;
 	}
