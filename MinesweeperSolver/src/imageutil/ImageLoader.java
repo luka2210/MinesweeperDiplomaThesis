@@ -45,11 +45,9 @@ public class ImageLoader {
 	}
 	
 	private static String getImagePath(String imgName, String imgFormat) {
-		String ret = "/static/images/".
+		return "/static/images/".
 				concat(imgName).
 				concat(".").
 				concat(imgFormat);
-		System.out.println(ret);
-		return ret;
 	}
 }
