@@ -3,7 +3,8 @@ package gui;
 import javax.swing.JPanel;
 
 import eventlistener.GameFieldEventListener;
-import gamelogic.Board;
+import eventlistener.MineCounterEventListener;
+import gameutil.Board;
 import imageutil.ImageLoader;
 
 
@@ -19,13 +20,16 @@ public class GameBoard implements GameFieldEventListener {
 	
 	private boolean firstClick, gameOver, gameWon;
 	
-	public GameBoard(int numRows, int numColumns, int numMines) {
+	private MineCounterEventListener cntListener;
+	
+	public GameBoard(int numRows, int numColumns, int numMines, MineCounterEventListener cntListener) {
 		this.numRows = numRows;
 		this.numColumns = numColumns;
 		this.numMines = numMines;
 		this.firstClick = true;
 		this.gameOver = false;
 		this.gameWon = false;
+		this.cntListener = cntListener;
 		fields = initFields();
 		initialize();
 	}
@@ -99,7 +103,15 @@ public class GameBoard implements GameFieldEventListener {
 		
 		if (field.isOpened() || gameOver)
 			return;
-		field.changeMarked();
+		
+		if (!field.isMarked() && cntListener.minesLeft() > 0) {
+			cntListener.markMine();
+			field.setMarked(true);
+		}
+		else if (field.isMarked()) {
+			cntListener.unmarkMine();
+			field.setMarked(false);
+		}
 	}
 
 	@Override

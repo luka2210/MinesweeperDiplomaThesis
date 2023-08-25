@@ -1,9 +1,7 @@
-package gamelogic;
+package gameutil;
 
 import java.util.ArrayList;
 
-import gameutil.Coordinate;
-import gameutil.RandomUniqueNumbers;
 import gui.GameField;
 
 public class Board {

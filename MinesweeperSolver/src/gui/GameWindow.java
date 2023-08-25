@@ -12,6 +12,7 @@ public class GameWindow {
 	private int frameHeight, frameWidth;
 	
 	private GameBoard gameBoard;
+	private MineCounter mineCounter;
 	
 	private JFrame frame;
 	
@@ -26,7 +27,8 @@ public class GameWindow {
 		this.framePosY = framePosY;
 		this.frameHeight = GameBoard.FIELD_HEIGHT * numRows + UPPER_PANEL_HEIGHT + OS_SPECIFIC_HEIGHT_OFFSET;
 		this.frameWidth = GameBoard.FIELD_WIDTH * numColumns;
-		this.gameBoard = new GameBoard(this.numRows, this.numColumns, this.numMines);
+		this.mineCounter = new MineCounter(numMines);
+		this.gameBoard = new GameBoard(this.numRows, this.numColumns, this.numMines, mineCounter);
 		initialize();
 	}
 
@@ -40,6 +42,7 @@ public class GameWindow {
 		frame.getContentPane().setLayout(null);
 		
 		frame.add(gameBoard.getPanel());
+		frame.add(mineCounter.getPanel());
 	}
 	
 	public JFrame getFrame() {

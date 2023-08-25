@@ -89,8 +89,8 @@ public class GameField {
 		this.ngbMines = ngbMines;
 	}
 
-	public void changeMarked() {
-		marked = !marked;
+	public void setMarked(boolean marked) {
+		this.marked = marked;
 		if (marked) 
 			fieldFrame.setIcon(ImageLoader.FIELD_MARKED);
 		else
