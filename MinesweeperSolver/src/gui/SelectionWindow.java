@@ -26,7 +26,7 @@ public class SelectionWindow {
 	
 	private final static Integer MIN_ROWS = 9, MAX_ROWS = 50;
 	private final static Integer MIN_COLS = 9, MAX_COLS = 50;
-	private final static Integer MIN_MINES = 1, MAX_MINES = MAX_ROWS * MAX_COLS;
+	private final static Integer MIN_MINES = 1, MAX_MINES = MAX_ROWS * MAX_COLS - 9;
 	
 	private JFrame frame;
 	
@@ -242,7 +242,7 @@ public class SelectionWindow {
 		
 		int numRows = inRange(Integer.parseInt(numRowsStr), MIN_ROWS, MAX_ROWS);
 		int numColumns = inRange(Integer.parseInt(numColumnsStr), MIN_COLS, MAX_COLS);
-		int numMines = inRange(Integer.parseInt(numMinesStr), MIN_MINES, Math.min(numRows * numColumns, MAX_MINES));
+		int numMines = inRange(Integer.parseInt(numMinesStr), MIN_MINES, Math.min(numRows * numColumns - 9, MAX_MINES));
 		
 		openGameWindow(numRows, numColumns, numMines);
 	}

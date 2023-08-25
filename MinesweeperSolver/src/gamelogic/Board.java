@@ -9,15 +9,18 @@ import gui.GameField;
 public class Board {
 	
 	public static int[][] initBoard(int numRows, int numColumns, int numMines, int row, int col) {
-		Coordinate coordAvoid = new Coordinate(row, col);
-		
 		int[][] board = new int[numRows][numColumns]; 
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
 				board[i][j] = 0;
 		
 		// put mines randomly all over the board
-		int indexAvoid = CoordinateToIndex(coordAvoid, numColumns);
+		ArrayList<Integer> indexAvoid = new ArrayList<Integer>();
+		for (int i = row - 1; i < row + 2; i++)
+			for (int j = col - 1; j < col + 2; j++)
+				if (i >= 0 && i < numRows && j >= 0 && j >= 0 && j < numColumns)
+					indexAvoid.add(CoordinateToIndex(new Coordinate(i, j), numColumns));
+		
 		ArrayList<Integer> mineIndexes = RandomUniqueNumbers.generate(numRows * numColumns, numMines, indexAvoid);
 		
 		for (int mineIndex: mineIndexes) {
