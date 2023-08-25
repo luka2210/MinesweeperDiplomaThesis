@@ -3,12 +3,18 @@ package gui;
 import javax.swing.JFrame;
 
 public class GameWindow {
+	public static final int UPPER_PANEL_HEIGHT = 60;
+	public static final int OS_SPECIFIC_HEIGHT_OFFSET = 28;
 
 	private int numRows, numColumns, numMines;
+
+	private int framePosX, framePosY;
+	private int frameHeight, frameWidth;
+	
+	private GameBoard gameBoard;
 	
 	private JFrame frame;
-	private int framePosX, framePosY;
-
+	
 	/**
 	 * Create the application.
 	 */
@@ -18,6 +24,9 @@ public class GameWindow {
 		this.numMines = numMines;
 		this.framePosX = framePosX;
 		this.framePosY = framePosY;
+		this.frameHeight = GameBoard.FIELD_HEIGHT * numRows + UPPER_PANEL_HEIGHT + OS_SPECIFIC_HEIGHT_OFFSET;
+		this.frameWidth = GameBoard.FIELD_WIDTH * numColumns;
+		this.gameBoard = new GameBoard(this.numRows, this.numColumns, this.numMines);
 		initialize();
 	}
 
@@ -26,12 +35,14 @@ public class GameWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(framePosX, framePosY, 450, 300);
+		frame.setBounds(framePosX, framePosY, frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		frame.add(gameBoard.getPanel());
 	}
 	
 	public JFrame getFrame() {
 		return frame;
 	}
-
 }

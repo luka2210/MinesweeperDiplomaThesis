@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 
 public class ImageLoader {
 	public static final ImageIcon[] FIELDS, COUNTER;
+	public static final ImageIcon FIELD;
 	public static final ImageIcon FIELD_MARKED, FIELD_MARKED_WRONG;
 	public static final ImageIcon FIELD_MINE, FIELD_MINE_CLICKED;
 	public static final ImageIcon SMILEY, SMILEY_PRESSED;
@@ -17,10 +18,11 @@ public class ImageLoader {
 		for (int i = 0; i < 9; i++)
 			FIELDS[i] = new ImageIcon(loader.getResource(getImagePath("field", i, "png")));
 		
-		COUNTER = new ImageIcon[9];
-		for (int i = 0; i < 9; i++)
+		COUNTER = new ImageIcon[10];
+		for (int i = 0; i < 10; i++)
 			COUNTER[i] = new ImageIcon(loader.getResource(getImagePath("counter", i, "png")));
 		
+		FIELD = new ImageIcon(loader.getResource(getImagePath("field", "png")));
 		FIELD_MARKED = new ImageIcon(loader.getResource(getImagePath("fieldMarked", "png")));
 		FIELD_MARKED_WRONG = new ImageIcon(loader.getResource(getImagePath("fieldMarkedWrong", "png")));
 		FIELD_MINE = new ImageIcon(loader.getResource(getImagePath("fieldMine", "png")));
@@ -35,7 +37,7 @@ public class ImageLoader {
 	}
 	
 	private static String getImagePath(String imgName, Integer val, String imgFormat) {
-		return "static/images/".
+		return "/static/images/".
 				concat(imgName).
 				concat(val.toString()).
 				concat(".").
@@ -43,9 +45,11 @@ public class ImageLoader {
 	}
 	
 	private static String getImagePath(String imgName, String imgFormat) {
-		return "static/images/".
+		String ret = "/static/images/".
 				concat(imgName).
 				concat(".").
 				concat(imgFormat);
+		System.out.println(ret);
+		return ret;
 	}
 }
