@@ -4,7 +4,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
+import eventlistener.GameFieldEventListener;
 import imageutil.ImageLoader;
 
 public class GameField {
@@ -15,8 +17,10 @@ public class GameField {
 	private int ngbMines;
 	private boolean opened, marked;
 	private int fieldHeight, fieldWidth;
+	private GameFieldEventListener listener;
 	
-	public GameField(int i, int j, boolean mine, int ngbMines, int fieldHeight, int fieldWidth) {
+	public GameField(int i, int j, boolean mine, int ngbMines, int fieldHeight, int fieldWidth, 
+			GameFieldEventListener listener) {
 		this.i = i;
 		this.j = j;
 		this.mine = mine;
@@ -26,6 +30,7 @@ public class GameField {
 		this.fieldHeight = fieldHeight;
 		this.fieldWidth = fieldWidth;
 		this.fieldFrame = initFieldFrame();
+		this.listener = listener;
 	}
 	
 	private JLabel initFieldFrame() {
@@ -34,7 +39,12 @@ public class GameField {
 		fieldFrame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//implement function in game logic
+				if (SwingUtilities.isLeftMouseButton(e))
+					listener.leftClick(i, j);
+				else if (SwingUtilities.isRightMouseButton(e))
+					listener.rightClick(i, j);
+				else if (SwingUtilities.isMiddleMouseButton(e))
+					listener.middleClick(i, j);
 			}
 			
 			@Override

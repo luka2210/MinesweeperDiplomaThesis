@@ -2,9 +2,10 @@ package gui;
 
 import javax.swing.JPanel;
 
+import eventlistener.GameFieldEventListener;
 import gamelogic.Board;
 
-public class GameBoard {
+public class GameBoard implements GameFieldEventListener {
 	
 	public static final int FIELD_HEIGHT = 20, FIELD_WIDTH = 20;
 	
@@ -28,7 +29,7 @@ public class GameBoard {
 		GameField[][] fields = new GameField[numRows][numColumns];
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
-				fields[i][j] = new GameField(i, j, board[i][j] == -1, board[i][j], FIELD_HEIGHT, FIELD_WIDTH);
+				fields[i][j] = new GameField(i, j, board[i][j] == -1, board[i][j], FIELD_HEIGHT, FIELD_WIDTH, this);
 		
 		return fields;
 	}
@@ -45,5 +46,23 @@ public class GameBoard {
 
 	public JPanel getPanel() {
 		return panel;
+	}
+
+	@Override
+	public void leftClick(int i, int j) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rightClick(int i, int j) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void middleClick(int i, int j) {
+		// TODO Auto-generated method stub
+		
 	}
 }

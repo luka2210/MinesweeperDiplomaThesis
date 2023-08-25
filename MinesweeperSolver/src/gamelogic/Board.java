@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameutil.Coordinate;
 import gameutil.RandomUniqueNumbers;
+import gui.GameField;
 
 public class Board {
 	
@@ -53,5 +54,23 @@ public class Board {
 					System.out.print(board[i][j]);
 			System.out.println();
 		}
+	}
+	
+	public static int[][] getBoardState(GameField[][] fields, int numRows, int numColumns) {
+		int[][] boardState = new int[numRows][numColumns];
+		
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++) {
+				if (fields[i][j].isOpened())
+					boardState[i][j] = -2;
+				else if (fields[i][j].isMarked())
+					boardState[i][j] = -3;
+				else if (fields[i][j].isMine())
+					boardState[i][j] = -1;
+				else
+					boardState[i][j] = fields[i][j].getNgbMines();
+			}
+		
+		return boardState;
 	}
 }
