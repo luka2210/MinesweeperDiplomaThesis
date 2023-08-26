@@ -7,10 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import eventlistener.TimerEventListener;
-import imageutil.ImageLoader;
+import image.ImageLoader;
 
-public class GameTimer implements TimerEventListener {
+public class GameTimer {
 	
 	public static int DIGIT_HEIGHT = 30, DIGIT_WIDTH = 21;
 	private static int TOP_MARGIN = 15;
@@ -60,8 +59,6 @@ public class GameTimer implements TimerEventListener {
 		digit3.setIcon(ImageLoader.COUNTER[timePassed % 10]);
 	}
 
-	
-	@Override
 	public void start() {
 		// TODO Auto-generated method stub
 		int delayMilliseconds = 1000;
@@ -77,14 +74,12 @@ public class GameTimer implements TimerEventListener {
 		timer = new Timer(delayMilliseconds, timerActionListener);
 		timer.start();
 	}
-	
-	@Override
+
 	public void stop() {
 		// TODO Auto-generated method stub
 		timer.stop();
 	}
 
-	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
 		stop();

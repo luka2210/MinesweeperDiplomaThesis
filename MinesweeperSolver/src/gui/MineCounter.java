@@ -3,10 +3,9 @@ package gui;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import eventlistener.MineCounterEventListener;
-import imageutil.ImageLoader;
+import image.ImageLoader;
 
-public class MineCounter implements MineCounterEventListener {
+public class MineCounter {
 	
 	private static int DIGIT_HEIGHT = 30, DIGIT_WIDTH = 21;
 	private static int TOP_MARGIN = 15;

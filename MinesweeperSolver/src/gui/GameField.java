@@ -6,23 +6,23 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import eventlistener.GameFieldEventListener;
-import imageutil.ImageLoader;
+import game.listener.GameFieldEventListener;
+import image.ImageLoader;
 
 public class GameField {
 	
 	private JLabel fieldFrame;
-	private int i, j;
+	private int row, col;
 	private boolean mine;
 	private int ngbMines;
 	private boolean opened, marked;
 	private int fieldHeight, fieldWidth;
 	private GameFieldEventListener listener;
 	
-	public GameField(int i, int j, int fieldHeight, int fieldWidth, 
+	public GameField(int row, int col, int fieldHeight, int fieldWidth, 
 			GameFieldEventListener listener) {
-		this.i = i;
-		this.j = j;
+		this.row = row;
+		this.col = col;
 		this.opened = false;
 		this.marked = false;
 		this.fieldHeight = fieldHeight;
@@ -38,26 +38,24 @@ public class GameField {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e))
-					listener.leftClick(i, j);
+					listener.fieldLeftClick(row, col);
 				else if (SwingUtilities.isRightMouseButton(e))
-					listener.rightClick(i, j);
+					listener.fieldRightClick(row, col);
 				else if (SwingUtilities.isMiddleMouseButton(e))
-					listener.middleClick(i, j);
+					listener.fieldMiddleClick(row, col);
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				listener.leftClickPressed(i, j);
+				listener.fieldLeftClickPressed(row, col);
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (opened || marked) 
-					return;
-				fieldFrame.setIcon(ImageLoader.FIELD);
+				listener.fieldLeftClickReleased(row, col);
 			}
 		});
-		fieldFrame.setBounds(j * fieldWidth, i * fieldHeight, fieldWidth, fieldHeight);
+		fieldFrame.setBounds(col * fieldWidth, row * fieldHeight, fieldWidth, fieldHeight);
 		return fieldFrame;
 	}
 	

@@ -1,4 +1,4 @@
-package inpututil;
+package input;
 
 import javax.swing.text.PlainDocument;
 
