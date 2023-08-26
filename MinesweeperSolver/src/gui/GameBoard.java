@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import eventlistener.GameFieldEventListener;
 import eventlistener.MineCounterEventListener;
+import eventlistener.TimerEventListener;
 import gameutil.Board;
 import imageutil.ImageLoader;
 
@@ -21,8 +22,10 @@ public class GameBoard implements GameFieldEventListener {
 	private boolean firstClick, gameOver, gameWon;
 	
 	private MineCounterEventListener cntListener;
+	private TimerEventListener timerListener;
 	
-	public GameBoard(int numRows, int numColumns, int numMines, MineCounterEventListener cntListener) {
+	public GameBoard(int numRows, int numColumns, int numMines, 
+			MineCounterEventListener cntListener, TimerEventListener timerListener) {
 		this.numRows = numRows;
 		this.numColumns = numColumns;
 		this.numMines = numMines;
@@ -30,6 +33,7 @@ public class GameBoard implements GameFieldEventListener {
 		this.gameOver = false;
 		this.gameWon = false;
 		this.cntListener = cntListener;
+		this.timerListener = timerListener;
 		fields = initFields();
 		initialize();
 	}
@@ -61,23 +65,46 @@ public class GameBoard implements GameFieldEventListener {
 	public void leftClick(int row, int col) {
 		GameField field = fields[row][col];
 		
-		if (field.isOpened() || field.isMarked() || gameOver)
+		if (field.isOpened() || field.isMarked() || gameOver || gameWon)
 			return;
 		
 		if (firstClick) {
 			assignMines(row, col);
+			timerListener.start();
 			firstClick = false;
 		}
 		
 		field.open();
-		
 		gameOver = field.isMine();
-		if (gameOver) {
-			return;
+		gameWon = gameWon();
+		
+		if (gameOver || gameWon) {
+			revealMines();
+			timerListener.stop();
 		}
 		
 		if (field.getNgbMines() == 0)
 			openAllNeighbors(row, col);
+	}
+	
+	private void revealMines() {
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+				if (fields[i][j].isMarked() && !fields[i][j].isMine())
+					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MARKED_WRONG);
+				else if (fields[i][j].isOpened() && fields[i][j].isMine())
+					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE_CLICKED);
+				else if (!fields[i][j].isMarked() && fields[i][j].isMine())
+					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE);
+	}
+	
+	private boolean gameWon() {
+		int counter = 0;
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+				if (fields[i][j].isOpened())
+					counter++;
+		return counter == numRows * numColumns - numMines;
 	}
 	
 	private void assignMines(int row, int col) {
@@ -101,7 +128,7 @@ public class GameBoard implements GameFieldEventListener {
 	public void rightClick(int row, int col) {
 		GameField field = fields[row][col];
 		
-		if (field.isOpened() || gameOver)
+		if (field.isOpened() || gameOver || gameWon)
 			return;
 		
 		if (!field.isMarked() && cntListener.minesLeft() > 0) {
@@ -118,7 +145,7 @@ public class GameBoard implements GameFieldEventListener {
 	public void middleClick(int row, int col) {
 		GameField field = fields[row][col];
 		
-		if (!field.isOpened() || field.isMarked() || gameOver)
+		if (!field.isOpened() || field.isMarked() || gameOver || gameWon)
 			return;
 		
 		int counter = 0;
@@ -134,7 +161,7 @@ public class GameBoard implements GameFieldEventListener {
 	@Override
 	public void leftClickPressed(int row, int col) {
 		GameField field = fields[row][col];
-		if (field.isOpened() || field.isMarked() || gameOver) 
+		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
 			return;
 		field.getFieldFrame().setIcon(ImageLoader.FIELDS[0]);
 	}
@@ -142,7 +169,7 @@ public class GameBoard implements GameFieldEventListener {
 	@Override
 	public void leftClickReleased(int row, int col) {
 		GameField field = fields[row][col];
-		if (field.isOpened() || field.isMarked() || gameOver) 
+		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
 			return;
 		field.getFieldFrame().setIcon(ImageLoader.FIELD);
 	}

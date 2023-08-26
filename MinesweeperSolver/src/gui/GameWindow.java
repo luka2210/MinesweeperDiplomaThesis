@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 public class GameWindow {
 	public static final int UPPER_PANEL_HEIGHT = 60;
 	public static final int OS_SPECIFIC_HEIGHT_OFFSET = 28;
-
+	
 	private int numRows, numColumns, numMines;
 
 	private int framePosX, framePosY;
@@ -13,6 +13,7 @@ public class GameWindow {
 	
 	private GameBoard gameBoard;
 	private MineCounter mineCounter;
+	private GameTimer timer;
 	
 	private JFrame frame;
 	
@@ -28,7 +29,8 @@ public class GameWindow {
 		this.frameHeight = GameBoard.FIELD_HEIGHT * numRows + UPPER_PANEL_HEIGHT + OS_SPECIFIC_HEIGHT_OFFSET;
 		this.frameWidth = GameBoard.FIELD_WIDTH * numColumns;
 		this.mineCounter = new MineCounter(numMines);
-		this.gameBoard = new GameBoard(this.numRows, this.numColumns, this.numMines, mineCounter);
+		this.timer = new GameTimer(frameWidth);
+		this.gameBoard = new GameBoard(this.numRows, this.numColumns, this.numMines, mineCounter, timer);
 		initialize();
 	}
 
@@ -39,10 +41,12 @@ public class GameWindow {
 		frame = new JFrame();
 		frame.setBounds(framePosX, framePosY, frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		frame.add(gameBoard.getPanel());
 		frame.add(mineCounter.getPanel());
+		frame.add(timer.getPanel());
 	}
 	
 	public JFrame getFrame() {

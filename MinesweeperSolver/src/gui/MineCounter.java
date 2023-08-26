@@ -7,6 +7,10 @@ import eventlistener.MineCounterEventListener;
 import imageutil.ImageLoader;
 
 public class MineCounter implements MineCounterEventListener {
+	
+	private static int DIGIT_HEIGHT = 30, DIGIT_WIDTH = 21;
+	private static int TOP_MARGIN = 15;
+	
 	private JLabel digit1, digit2, digit3;
 	private JPanel panel;
 	
@@ -20,19 +24,19 @@ public class MineCounter implements MineCounterEventListener {
 	
 	private void initialize() {
 		panel = new JPanel();
-		panel.setBounds(0, 15, 63, 30);
+		panel.setBounds(0, TOP_MARGIN, DIGIT_WIDTH * 3, DIGIT_HEIGHT);
 		panel.setLayout(null);
 		
 		digit1 = new JLabel();
-		digit1.setBounds(0, 0, 21, 30);
+		digit1.setBounds(0, 0, DIGIT_WIDTH, DIGIT_HEIGHT);
 		panel.add(digit1);
 		
 		digit2 = new JLabel();
-		digit2.setBounds(21, 0, 21, 30);
+		digit2.setBounds(DIGIT_WIDTH, 0, DIGIT_WIDTH, DIGIT_HEIGHT);
 		panel.add(digit2);
 		
 		digit3 = new JLabel();
-		digit3.setBounds(42, 0, 21, 30);
+		digit3.setBounds(DIGIT_WIDTH * 2, 0, DIGIT_WIDTH, DIGIT_HEIGHT);
 		panel.add(digit3);
 		
 		setCounter(minesLeft());
