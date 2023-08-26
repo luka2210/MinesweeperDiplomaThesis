@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import game.listener.SmileyEventListener;
+import event.listener.SmileyEventListener;
 import image.ImageLoader;
 
 public class SmileyButton {

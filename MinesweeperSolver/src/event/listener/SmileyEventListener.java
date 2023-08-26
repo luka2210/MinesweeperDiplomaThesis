@@ -1,4 +1,4 @@
-package game.listener;
+package event.listener;
 
 import gui.SmileyButton;
 

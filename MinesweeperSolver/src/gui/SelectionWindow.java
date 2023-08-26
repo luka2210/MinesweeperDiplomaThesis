@@ -24,8 +24,8 @@ public class SelectionWindow {
 	private final static Integer NUM_ROWS_MEDIUM = 16, NUM_COLS_MEDIUM = 16, NUM_MINES_MEDIUM = 40;
 	private final static Integer NUM_ROWS_HARD = 16, NUM_COLS_HARD = 30, NUM_MINES_HARD = 99;
 	
-	private final static Integer MIN_ROWS = 9, MAX_ROWS = 50;
-	private final static Integer MIN_COLS = 9, MAX_COLS = 50;
+	private final static Integer MIN_ROWS = 9, MAX_ROWS = 36;
+	private final static Integer MIN_COLS = 9, MAX_COLS = 70;
 	private final static Integer MIN_MINES = 1, MAX_MINES = MAX_ROWS * MAX_COLS - 9;
 	
 	private JFrame frame;

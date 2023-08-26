@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.JPanel;
 
-import game.listener.GameBoardEventListener;
+import event.listener.GameBoardEventListener;
 
 public class GameBoard {
 	

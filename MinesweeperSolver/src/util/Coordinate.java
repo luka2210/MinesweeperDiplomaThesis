@@ -1,4 +1,4 @@
-package gameutil;
+package util;
 
 public class Coordinate {
 	int i, j;

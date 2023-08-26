@@ -1,14 +1,14 @@
 package event.handler;
 
-import game.listener.GameBoardEventListener;
-import game.listener.SmileyEventListener;
-import gameutil.Board;
+import event.listener.GameBoardEventListener;
+import event.listener.SmileyEventListener;
 import gui.GameBoard;
 import gui.GameField;
 import gui.GameTimer;
 import gui.MineCounter;
 import gui.SmileyButton;
 import image.ImageLoader;
+import util.Board;
 
 public class GameEventHandler implements GameBoardEventListener, SmileyEventListener{
 	
@@ -69,7 +69,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 			for (int j = 0; j < numColumns; j++)
 				if (fields[i][j].isOpened())
 					counter++;
-		return counter == numRows * numColumns - numMines;
+		return counter == numRows * numColumns - numMines && !gameOver;
 	}
 	
 	private void assignMines(GameField[][] fields, int row, int col) {
@@ -90,10 +90,10 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	
 	private void setSmileyIcon() {
-		if (gameWon)
-			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
-		else if (gameOver)
+		if (gameOver)
 			smiley.getButton().setIcon(ImageLoader.SMILEY_DEAD);
+		else if (gameWon)
+			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
 	}
 	
 	@Override
