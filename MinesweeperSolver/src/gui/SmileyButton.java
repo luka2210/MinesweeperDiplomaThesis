@@ -11,8 +11,8 @@ import image.ImageLoader;
 
 public class SmileyButton {
 	
-	public final static int BUTTON_WIDTH = 30, BUTTON_HEIGHT = 30;
-	public final static int TOP_MARGIN = 15;
+	public final static int BUTTON_WIDTH = 40, BUTTON_HEIGHT = 40;
+	public final static int TOP_MARGIN = 10;
 	
 	private JLabel button;
 	

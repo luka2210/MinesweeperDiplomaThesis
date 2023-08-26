@@ -7,8 +7,8 @@ import image.ImageLoader;
 
 public class MineCounter {
 	
-	private static int DIGIT_HEIGHT = 30, DIGIT_WIDTH = 21;
-	private static int TOP_MARGIN = 15;
+	private static int DIGIT_HEIGHT = GameTimer.DIGIT_HEIGHT, DIGIT_WIDTH = GameTimer.DIGIT_WIDTH;
+	private static int TOP_MARGIN = GameTimer.TOP_MARGIN;
 	
 	private JLabel digit1, digit2, digit3;
 	private JPanel panel;

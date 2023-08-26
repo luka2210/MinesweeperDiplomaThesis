@@ -6,7 +6,7 @@ import game.listener.GameBoardEventListener;
 
 public class GameBoard {
 	
-	public static final int FIELD_HEIGHT = 20, FIELD_WIDTH = 20;
+	public static final int FIELD_HEIGHT = 25, FIELD_WIDTH = 25;
 	
 	private int numRows, numColumns, numMines;
 	

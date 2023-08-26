@@ -11,8 +11,8 @@ import image.ImageLoader;
 
 public class GameTimer {
 	
-	public static int DIGIT_HEIGHT = 30, DIGIT_WIDTH = 21;
-	private static int TOP_MARGIN = 15;
+	public static int DIGIT_HEIGHT = 40, DIGIT_WIDTH = 27;
+	public static int TOP_MARGIN = 10;
 	
 	private int frameWidth;
 	
