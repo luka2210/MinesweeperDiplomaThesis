@@ -47,12 +47,12 @@ public class GameField {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				listener.fieldLeftClickPressed(row, col);
+				listener.fieldMousePressed(row, col);
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				listener.fieldLeftClickReleased(row, col);
+				listener.fieldMouseReleased(row, col);
 			}
 		});
 		fieldFrame.setBounds(col * fieldWidth, row * fieldHeight, fieldWidth, fieldHeight);

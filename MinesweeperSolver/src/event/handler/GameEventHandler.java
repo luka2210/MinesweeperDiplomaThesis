@@ -159,24 +159,31 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 		
 		if (field.getNgbMines() == counter)
 			openAllNeighbors(fields, row, col);
+		
+		
 	}
 	
 	@Override
-	public void fieldLeftClickPressed(int row, int col) {
+	public void fieldMousePressed(int row, int col) {
 		GameField field = gameBoard.getFields()[row][col];
 		
 		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
 			return;
 		field.getFieldFrame().setIcon(ImageLoader.FIELDS[0]);
+		
+		smiley.getButton().setIcon(ImageLoader.SMILEY_SURPRISED);
 	}
 
 	@Override
-	public void fieldLeftClickReleased(int row, int col) {
+	public void fieldMouseReleased(int row, int col) {
 		GameField field = gameBoard.getFields()[row][col];
 		
 		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
 			return;
+		
 		field.getFieldFrame().setIcon(ImageLoader.FIELD);
+		
+		smiley.getButton().setIcon(ImageLoader.SMILEY);
 	}
 	@Override
 	public void smileyLeftMouseClicked() {
@@ -184,12 +191,15 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	@Override
 	public void smileyLeftMousePressed() {
-		if (!gameOver && !gameWon)
-			smiley.getButton().setIcon(ImageLoader.SMILEY_PRESSED);
+		smiley.getButton().setIcon(ImageLoader.SMILEY_PRESSED);
 	}
 	@Override
 	public void smileyLeftMouseReleased() {
-		if (!gameOver && !gameWon)
+		if (gameOver)
+			smiley.getButton().setIcon(ImageLoader.SMILEY_DEAD);
+		else if (gameWon)
+			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
+		else
 			smiley.getButton().setIcon(ImageLoader.SMILEY);
 	}
 }

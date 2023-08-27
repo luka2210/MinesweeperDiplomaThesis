@@ -9,6 +9,7 @@ public class ImageLoader {
 	public static final ImageIcon FIELD_MINE, FIELD_MINE_CLICKED;
 	public static final ImageIcon SMILEY, SMILEY_PRESSED;
 	public static final ImageIcon SMILEY_DEAD, SMILEY_WON;
+	public static final ImageIcon SMILEY_SURPRISED;
 	public static final ImageIcon GAME_ICON;
 	
 	static {
@@ -32,6 +33,7 @@ public class ImageLoader {
 		SMILEY_PRESSED = new ImageIcon(loader.getResource(getImagePath("smileyPressed", "png")));
 		SMILEY_DEAD = new ImageIcon(loader.getResource(getImagePath("smileyDead", "png")));
 		SMILEY_WON = new ImageIcon(loader.getResource(getImagePath("smileyWon", "png")));
+		SMILEY_SURPRISED = new ImageIcon(loader.getResource(getImagePath("smileySurprised", "png")));
 		
 		GAME_ICON = new ImageIcon(loader.getResource(getImagePath("gameIcon", "png")));
 	}
