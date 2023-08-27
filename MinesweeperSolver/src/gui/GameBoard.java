@@ -45,6 +45,12 @@ public class GameBoard {
 			for (int j = 0; j < numColumns; j++)
 				panel.add(fields[i][j].getFieldFrame());
 	}
+	
+	public void reset() {
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+				fields[i][j].reset();
+	}
 
 	public int getNumRows() {
 		return numRows;

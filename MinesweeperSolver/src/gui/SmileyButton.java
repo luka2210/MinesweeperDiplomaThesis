@@ -48,6 +48,10 @@ public class SmileyButton {
 		button.setIcon(ImageLoader.SMILEY);
 	}
 
+	public void reset() {
+		button.setIcon(ImageLoader.SMILEY);
+	}
+	
 	public JLabel getButton() {
 		return button;
 	}

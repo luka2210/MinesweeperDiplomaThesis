@@ -26,6 +26,7 @@ public class GameTimer {
 	public GameTimer(int frameWidth) {
 		this.frameWidth = frameWidth;
 		this.timePassed = 0;
+		timer = initTimer();
 		initialize();
 	}
 
@@ -46,45 +47,46 @@ public class GameTimer {
 		digit3.setBounds(DIGIT_WIDTH * 2, 0, DIGIT_WIDTH, DIGIT_HEIGHT);
 		panel.add(digit3);
 		
-		setTimer();
+		setDigits();
 	}
 	
 	public int getTimePassed() {
 		return timePassed;
 	}
 	
-	private void setTimer() {
+	private void setDigits() {
 		digit1.setIcon(ImageLoader.COUNTER[timePassed / 100]);
 		digit2.setIcon(ImageLoader.COUNTER[timePassed % 100 / 10]);
 		digit3.setIcon(ImageLoader.COUNTER[timePassed % 10]);
 	}
 
-	public void start() {
-		// TODO Auto-generated method stub
+	private Timer initTimer() {
 		int delayMilliseconds = 1000;
 		ActionListener timerActionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (timePassed < 1000) {
 					timePassed++;
-					setTimer();
+					setDigits();
 				}
 			}	
 		};
-		timer = new Timer(delayMilliseconds, timerActionListener);
+		return new Timer(delayMilliseconds, timerActionListener);
+	}
+	
+	public void start() {
 		timer.start();
 	}
 
 	public void stop() {
-		// TODO Auto-generated method stub
 		timer.stop();
 	}
 
 	public void reset() {
-		// TODO Auto-generated method stub
-		stop();
 		this.timePassed = 0;
-		start();
+		timer.restart();
+		timer.stop();
+		setDigits();
 	}
 	
 	public JPanel getPanel() {

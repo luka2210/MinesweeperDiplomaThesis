@@ -187,7 +187,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	@Override
 	public void smileyLeftMouseClicked() {
-		//to implement
+		reset();
 	}
 	@Override
 	public void smileyLeftMousePressed() {
@@ -201,5 +201,15 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
 		else
 			smiley.getButton().setIcon(ImageLoader.SMILEY);
+	}
+	
+	private void reset() {
+		gameOver = false;
+		gameWon = false;
+		firstClick = true;
+		gameBoard.reset();
+		smiley.reset();
+		mineCounter.reset();
+		gameTimer.reset();
 	}
 }

@@ -59,6 +59,20 @@ public class GameField {
 		return fieldFrame;
 	}
 	
+	public void open() {
+		opened = true;
+		if (mine)
+			fieldFrame.setIcon(ImageLoader.FIELD_MINE_CLICKED);
+		else 
+			fieldFrame.setIcon(ImageLoader.FIELDS[ngbMines]);
+	}
+	
+	public void reset() {
+		this.opened = false;
+		this.marked = false;
+		fieldFrame.setIcon(ImageLoader.FIELD);
+	}
+	
 	public boolean isMine() {
 		return mine;
 	}
@@ -93,13 +107,5 @@ public class GameField {
 			fieldFrame.setIcon(ImageLoader.FIELD_MARKED);
 		else
 			fieldFrame.setIcon(ImageLoader.FIELD);
-	}
-	
-	public void open() {
-		opened = true;
-		if (mine)
-			fieldFrame.setIcon(ImageLoader.FIELD_MINE_CLICKED);
-		else 
-			fieldFrame.setIcon(ImageLoader.FIELDS[ngbMines]);
 	}
 }

@@ -66,6 +66,11 @@ public class MineCounter {
 		digit2.setIcon(ImageLoader.COUNTER[minesLeft % 100 / 10]);
 		digit3.setIcon(ImageLoader.COUNTER[minesLeft % 10]);
 	}
+	
+	public void reset() {
+		markedMines = 0;
+		setCounter(minesLeft());
+	}
 
 	public JPanel getPanel() {
 		return panel;
