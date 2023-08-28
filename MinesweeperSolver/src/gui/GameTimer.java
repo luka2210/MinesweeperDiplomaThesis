@@ -1,11 +1,10 @@
 package gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import image.ImageLoader;
 
@@ -16,17 +15,18 @@ public class GameTimer {
 	
 	private int frameWidth;
 	
-	private JLabel digit1, digit2, digit3;
+	private volatile JLabel digit1, digit2, digit3;
 	private JPanel panel;
 	
-	private int timePassed;
+	private volatile int timePassed;
 	
 	private Timer timer;
+	
+	private static long DELAY_SECOND = 1000;
 	
 	public GameTimer(int frameWidth) {
 		this.frameWidth = frameWidth;
 		this.timePassed = 0;
-		timer = initTimer();
 		initialize();
 	}
 
@@ -60,32 +60,30 @@ public class GameTimer {
 		digit3.setIcon(ImageLoader.COUNTER[timePassed % 10]);
 	}
 
-	private Timer initTimer() {
-		int delayMilliseconds = 1000;
-		ActionListener timerActionListener = new ActionListener() {
+	private TimerTask getTimerTask() {
+		return new TimerTask() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void run() {
 				if (timePassed < 1000) {
 					timePassed++;
 					setDigits();
 				}
 			}	
 		};
-		return new Timer(delayMilliseconds, timerActionListener);
 	}
 	
 	public void start() {
-		timer.start();
+		timer = new Timer();
+		timer.schedule(getTimerTask(), 0, DELAY_SECOND);
 	}
 
 	public void stop() {
-		timer.stop();
+		timer.cancel();
+		timer.purge();
 	}
-
-	public void reset() {
-		this.timePassed = 0;
-		timer.restart();
-		timer.stop();
+	
+	public void resetTime() {
+		timePassed = 0;
 		setDigits();
 	}
 	

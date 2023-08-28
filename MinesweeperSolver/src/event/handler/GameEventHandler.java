@@ -213,6 +213,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 		gameBoard.reset();
 		smiley.reset();
 		mineCounter.reset();
-		gameTimer.reset();
+		gameTimer.stop();
+		gameTimer.resetTime();
 	}
 }
