@@ -70,13 +70,15 @@ public class BoardInitializer {
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++) {
 				if (fields[i][j].isOpened())
-					boardState[i][j] = -2;
-				else if (fields[i][j].isMarked())
-					boardState[i][j] = -3;
-				else if (fields[i][j].isMine())
-					boardState[i][j] = -1;
+					if (fields[i][j].isMine())
+						boardState[i][j] = -3;
+					else
+						boardState[i][j] = fields[i][j].getNgbMines();
 				else
-					boardState[i][j] = fields[i][j].getNgbMines();
+					if (fields[i][j].isMarked())
+						boardState[i][j] = -2;
+					else
+						boardState[i][j] = -1;
 			}
 		
 		return boardState;
