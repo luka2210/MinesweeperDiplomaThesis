@@ -57,7 +57,7 @@ public class SelectionWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Minesweeper");
 		frame.setBounds(300, 300, 515, 405);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
