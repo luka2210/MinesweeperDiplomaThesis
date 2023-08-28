@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import gui.GameField;
 
-public class Board {
+public class BoardInitializer {
 	
 	public static int[][] initBoard(int numRows, int numColumns, int numMines, int row, int col) {
 		int[][] board = new int[numRows][numColumns]; 

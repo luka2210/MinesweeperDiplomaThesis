@@ -8,7 +8,7 @@ import gui.GameTimer;
 import gui.MineCounter;
 import gui.SmileyButton;
 import image.ImageLoader;
-import util.Board;
+import util.BoardInitializer;
 
 public class GameEventHandler implements GameBoardEventListener, SmileyEventListener{
 	
@@ -73,7 +73,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	
 	private void assignMines(GameField[][] fields, int row, int col) {
-		int[][] board = Board.initBoard(numRows, numColumns, numMines, row, col);
+		int[][] board = BoardInitializer.initBoard(numRows, numColumns, numMines, row, col);
 		
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++) {
