@@ -16,6 +16,8 @@ public class GameBoard {
 	
 	private JPanel panel;
 	
+	private boolean gameWon = false, gameOver = false;
+	private boolean firstClick = true;
 	
 	public GameBoard(int numRows, int numColumns, int numMines, 
 			GameBoardEventListener listener) {
@@ -90,5 +92,29 @@ public class GameBoard {
 
 	public void setPanel(JPanel panel) {
 		this.panel = panel;
+	}
+
+	public boolean isGameWon() {
+		return gameWon;
+	}
+
+	public void setGameWon(boolean gameWon) {
+		this.gameWon = gameWon;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	public boolean isFirstClick() {
+		return firstClick;
+	}
+
+	public void setFirstClick(boolean firstClick) {
+		this.firstClick = firstClick;
 	}
 }

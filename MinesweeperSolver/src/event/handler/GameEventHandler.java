@@ -19,9 +19,6 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	
 	private int numRows, numColumns, numMines;
 	
-	private boolean gameWon = false, gameOver = false;
-	private boolean firstClick = true;
-	
 	public GameBoard getGameBoard() {
 		return gameBoard;
 	}
@@ -60,9 +57,9 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 				else if (fields[i][j].isOpened() && fields[i][j].isMine())
 					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE_CLICKED);
 				else if (!fields[i][j].isMarked() && fields[i][j].isMine())
-					if (gameOver)
+					if (gameBoard.isGameOver())
 						fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE);
-					else if (gameWon)
+					else if (gameBoard.isGameWon())
 						fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MARKED);
 	}
 	
@@ -72,7 +69,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 			for (int j = 0; j < numColumns; j++)
 				if (fields[i][j].isOpened())
 					counter++;
-		return counter == numRows * numColumns - numMines && !gameOver;
+		return counter == numRows * numColumns - numMines && !gameBoard.isGameOver();
 	}
 	
 	private void assignMines(GameField[][] fields, int row, int col) {
@@ -93,9 +90,9 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	
 	private void setSmileyIcon() {
-		if (gameOver)
+		if (gameBoard.isGameOver())
 			smiley.getButton().setIcon(ImageLoader.SMILEY_DEAD);
-		else if (gameWon)
+		else if (gameBoard.isGameWon())
 			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
 	}
 	
@@ -105,21 +102,21 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 		GameField field = fields[row][col];
 		
 		if (field.isOpened() || field.isMarked() 
-				|| gameOver || gameWon)
+				|| gameBoard.isGameOver() || gameBoard.isGameWon())
 			return;
 		
-		if (firstClick) {
+		if (gameBoard.isFirstClick()) {
 			assignMines(fields, row, col);
 			gameTimer.start();
-			firstClick = false;
+			gameBoard.setFirstClick(false);
 		}
 		
 		field.open();
 		
-		gameOver = field.isMine();
-		gameWon = checkGameWon(fields);
+		gameBoard.setGameOver(field.isMine());
+		gameBoard.setGameWon(checkGameWon(fields));
 		
-		if (gameOver || gameWon) {
+		if (gameBoard.isGameOver() || gameBoard.isGameWon()) {
 			revealMines(fields);
 			setSmileyIcon();
 			gameTimer.stop();
@@ -133,7 +130,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	public void fieldRightClick(int row, int col) {
 		GameField field = gameBoard.getFields()[row][col];
 		
-		if (field.isOpened() || gameOver || gameWon)
+		if (field.isOpened() || gameBoard.isGameOver() || gameBoard.isGameWon())
 			return;
 		
 		if (!field.isMarked() && mineCounter.minesLeft() > 0) {
@@ -151,7 +148,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 		GameField[][] fields = gameBoard.getFields();
 		GameField field = fields[row][col];
 		
-		if (!field.isOpened() || field.isMarked() || gameOver || gameWon)
+		if (!field.isOpened() || field.isMarked() || gameBoard.isGameOver() || gameBoard.isGameWon())
 			return;
 		
 		int counter = 0;
@@ -170,7 +167,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	public void fieldMousePressed(int row, int col) {
 		GameField field = gameBoard.getFields()[row][col];
 		
-		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
+		if (field.isOpened() || field.isMarked() || gameBoard.isGameOver() || gameBoard.isGameWon()) 
 			return;
 		field.getFieldFrame().setIcon(ImageLoader.FIELDS[0]);
 		
@@ -181,7 +178,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	public void fieldMouseReleased(int row, int col) {
 		GameField field = gameBoard.getFields()[row][col];
 		
-		if (field.isOpened() || field.isMarked() || gameOver || gameWon) 
+		if (field.isOpened() || field.isMarked() || gameBoard.isGameOver() || gameBoard.isGameWon()) 
 			return;
 		
 		field.getFieldFrame().setIcon(ImageLoader.FIELD);
@@ -198,18 +195,18 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	}
 	@Override
 	public void smileyLeftMouseReleased() {
-		if (gameOver)
+		if (gameBoard.isGameOver())
 			smiley.getButton().setIcon(ImageLoader.SMILEY_DEAD);
-		else if (gameWon)
+		else if (gameBoard.isGameWon())
 			smiley.getButton().setIcon(ImageLoader.SMILEY_WON);
 		else
 			smiley.getButton().setIcon(ImageLoader.SMILEY);
 	}
 	
 	private void reset() {
-		gameOver = false;
-		gameWon = false;
-		firstClick = true;
+		gameBoard.setGameOver(false);
+		gameBoard.setGameWon(false); 
+		gameBoard.setFirstClick(true);
 		gameBoard.reset();
 		smiley.reset();
 		mineCounter.reset();
