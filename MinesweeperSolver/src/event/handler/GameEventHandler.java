@@ -60,7 +60,10 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 				else if (fields[i][j].isOpened() && fields[i][j].isMine())
 					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE_CLICKED);
 				else if (!fields[i][j].isMarked() && fields[i][j].isMine())
-					fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE);
+					if (gameOver)
+						fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MINE);
+					else if (gameWon)
+						fields[i][j].getFieldFrame().setIcon(ImageLoader.FIELD_MARKED);
 	}
 	
 	private boolean checkGameWon(GameField[][] fields) {
