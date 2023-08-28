@@ -3,30 +3,20 @@ package mediator;
 import gui.GameBoard;
 import gui.GameTimer;
 import gui.MineCounter;
+import solver.BacktrackingSolver;
 
 public class EnvSolverMediator {
 	
 	private GameBoard gameBoard;
-	private GameTimer gameTimer;
 	private MineCounter mineCounter;
+	private BacktrackingSolver solver;
 	
-	public GameBoard getGameBoard() {
-		return gameBoard;
-	}
-	public void setGameBoard(GameBoard gameBoard) {
+	public EnvSolverMediator(GameBoard gameBoard, MineCounter mineCounter) {
+		super();
 		this.gameBoard = gameBoard;
-	}
-	public GameTimer getGameTimer() {
-		return gameTimer;
-	}
-	public void setGameTimer(GameTimer gameTimer) {
-		this.gameTimer = gameTimer;
-	}
-	public MineCounter getMineCounter() {
-		return mineCounter;
-	}
-	public void setMineCounter(MineCounter mineCounter) {
 		this.mineCounter = mineCounter;
+		this.solver = new BacktrackingSolver(gameBoard.getNumRows(), gameBoard.getNumColumns(), 
+					gameBoard.getNumMines());
 	}
 	
 	

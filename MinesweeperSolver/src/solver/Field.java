@@ -10,12 +10,14 @@ public class Field {
 	
 	private boolean assumedMine;
 	
-	private boolean unknownFieldOfInterest;
-	private boolean openFieldOfInterest;
+	private boolean unknownFieldOfInterest = false;
+	private boolean openFieldOfInterest = false;
 	
 	private Field[] ngbFields;
 	private Field[] unknownNbgsOfInterest;
 	private Field[] openNgbsOfInterest;
+	
+	private int numSolutions = 0;
 	
 	public Field(int row, int col, boolean unknown, boolean marked, int ngbMines) {
 		super();
@@ -95,6 +97,20 @@ public class Field {
 	public void setOpenNgbsOfInterest(Field[] openNgbsOfInterest) {
 		this.openNgbsOfInterest = openNgbsOfInterest;
 	}
+
+	public int getRow() {
+		return row;
+	}
 	
-	
+	public int getCol() {
+		return col;
+	}
+
+	public int getNumSolutions() {
+		return numSolutions;
+	}
+
+	public void setNumSolutions(int numSolutions) {
+		this.numSolutions = numSolutions;
+	}
 }
