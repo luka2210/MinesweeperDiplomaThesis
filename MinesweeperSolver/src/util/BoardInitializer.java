@@ -62,5 +62,6 @@ public class BoardInitializer {
 					System.out.print(board[i][j]);
 			System.out.println();
 		}
+		System.out.println();
 	}
 }
