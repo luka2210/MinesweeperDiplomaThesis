@@ -78,6 +78,8 @@ public class GameTimer {
 	}
 
 	public void stop() {
+		if (timer == null)
+			return;
 		timer.cancel();
 		timer.purge();
 	}

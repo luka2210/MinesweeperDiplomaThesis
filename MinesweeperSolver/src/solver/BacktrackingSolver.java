@@ -104,7 +104,7 @@ public class BacktrackingSolver {
 			for (int j = 0; j < numColumns; j++)
 				if (fields[i][j].isUnknownFieldOfInterest())
 					allUnknownFieldsOfInterest.add(fields[i][j]);
-		return (Field[]) allUnknownFieldsOfInterest.toArray();
+		return allUnknownFieldsOfInterest.toArray(new Field[allUnknownFieldsOfInterest.size()]);
 	}
 	
 	private Field[] getAllOpenFieldsOfInterest(Field[][] fields) {
@@ -113,7 +113,7 @@ public class BacktrackingSolver {
 			for (int j = 0; j < numColumns; j++)
 				if (fields[i][j].isOpenFieldOfInterest())
 					allOpenFieldsOfInterest.add(fields[i][j]);
-		return (Field[]) allOpenFieldsOfInterest.toArray();
+		return allOpenFieldsOfInterest.toArray(new Field[allOpenFieldsOfInterest.size()]);
 	}
 	
 	private int ngbMinesLeft(Field field) {
@@ -121,7 +121,7 @@ public class BacktrackingSolver {
 		for (var ngbField: field.getNgbFields())
 			if (ngbField.isMarked() || ngbField.isAssumedMine())
 				counter++;
-		return counter;
+		return field.getNgbMines() - counter;
 	}
 	
 	private void setNeighboringFieldsOfInterest(Field[][] fields, int row, int col) {
@@ -132,13 +132,13 @@ public class BacktrackingSolver {
 			for (var ngbField: field.getNgbFields())
 				if (ngbField.isOpenFieldOfInterest())
 					openNgbsOfInterest.add(ngbField);
-			field.setOpenNgbsOfInterest((Field[]) openNgbsOfInterest.toArray());
+			field.setOpenNgbsOfInterest(openNgbsOfInterest.toArray(new Field[openNgbsOfInterest.size()]));
 		
 			ArrayList<Field> unknownNgbsOfInterest = new ArrayList<Field>();
 			for (var ngbField: field.getNgbFields())
 				if (ngbField.isUnknownFieldOfInterest())
 					unknownNgbsOfInterest.add(ngbField);
-			field.setUnknownNbgsOfInterest((Field[]) unknownNgbsOfInterest.toArray());
+			field.setUnknownNbgsOfInterest(unknownNgbsOfInterest.toArray(new Field[unknownNgbsOfInterest.size()]));
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class BacktrackingSolver {
 			return;
 		
 		for (var ngbField: field.getNgbFields())
-			if (ngbField.isUnknown()) {
+			if (ngbField.isUnknown() && !ngbField.isMarked()) {
 				field.setOpenFieldOfInterest(true);
 				ngbField.setUnknownFieldOfInterest(true);
 			}
@@ -160,8 +160,8 @@ public class BacktrackingSolver {
 		ArrayList<Field> neighbors = new ArrayList<Field>();
 		for (int i = row - 1; i < row + 2; i++)
 			for (int j = col - 1; j < col + 2; j++)
-				if (row >= 0 && row < numRows && col > 0 && col < numColumns && fields[i][j] != field) 
+				if (i >= 0 && i < numRows && j >= 0 && j < numColumns && fields[i][j] != field) 
 					neighbors.add(fields[i][j]);
-		field.setNgbFields((Field[]) neighbors.toArray());
+		field.setNgbFields(neighbors.toArray(new Field[neighbors.size()]));
 	}
 }
