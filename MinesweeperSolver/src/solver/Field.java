@@ -8,7 +8,7 @@ public class Field {
 	private boolean marked;
 	private int ngbMines;
 	
-	private boolean assumedMine;
+	private boolean assumedMine = false;
 	
 	private boolean unknownFieldOfInterest = false;
 	private boolean openFieldOfInterest = false;
@@ -19,8 +19,11 @@ public class Field {
 	
 	private int numSolutions = 0;
 	
+	private float probabilityOfMine;
+	
 	public Field(int row, int col, boolean unknown, boolean marked, int ngbMines) {
-		super();
+		this.row = row;
+		this.col = col;
 		this.unknown = unknown;
 		this.marked = marked;
 		this.ngbMines = ngbMines;
@@ -112,5 +115,13 @@ public class Field {
 
 	public void setNumSolutions(int numSolutions) {
 		this.numSolutions = numSolutions;
+	}
+
+	public float getProbabilityOfMine() {
+		return probabilityOfMine;
+	}
+
+	public void setProbabilityOfMine(float totalNumSolutions) {
+		this.probabilityOfMine = numSolutions / totalNumSolutions;
 	}
 }
