@@ -3,6 +3,7 @@ package mediator;
 import java.awt.Point;
 import java.awt.event.InputEvent;
 
+import autoclicker.AutoClicker;
 import gui.GameBoard;
 import gui.GameField;
 import gui.MineCounter;
@@ -21,19 +22,18 @@ public class EnvSolverMediator {
 		super();
 		this.gameBoard = gameBoard;
 		this.mineCounter = mineCounter;
-		this.solver = new BacktrackingSolver(gameBoard.getNumRows(), gameBoard.getNumColumns(), 
-					gameBoard.getNumMines());
 	}
 	
 	public void solve() {
 		int numRows = gameBoard.getNumRows();
 		int numColumns = gameBoard.getNumColumns();
 		int numMines = gameBoard.getNumMines();
-		BacktrackingSolver solver = new BacktrackingSolver(numRows, numColumns, numMines);
-		while (!gameBoard.isGameOver() && gameBoard.isGameWon()) {
+		solver = new BacktrackingSolver(numRows, numColumns, numMines);
+		
+		while (!gameBoard.isGameOver() && !gameBoard.isGameWon()) {
 			Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
 			
-			Action action = solver.getAction(fields, numMines, false);
+			Action action = solver.getAction(fields, mineCounter.minesLeft(), gameBoard.isFirstClick());
 			
 			Click click = action.getClick();
 			int inputEvent;
@@ -54,7 +54,17 @@ public class EnvSolverMediator {
 			
 			GameField targetField = gameBoard.getFields()[action.getRow()][action.getCol()];
 			Point fieldLocation = targetField.getFieldFrame().getLocationOnScreen();
-			autoclicker
+			boolean clicked = AutoClicker.click(fieldLocation, GameBoard.FIELD_HEIGHT / 2, GameBoard.FIELD_WIDTH / 2, inputEvent);
+			
+			if (!clicked)
+				return; 
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

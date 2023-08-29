@@ -42,6 +42,9 @@ public class SmileyButton {
 				if (SwingUtilities.isLeftMouseButton(e)) {
 					listener.smileyLeftMouseClicked();
 				}
+				if (SwingUtilities.isRightMouseButton(e)) {
+					listener.smileyRightMouseClicked();
+				}
 			}
 		});
 		button.setBounds((frameWidth - BUTTON_WIDTH) / 2, TOP_MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT);

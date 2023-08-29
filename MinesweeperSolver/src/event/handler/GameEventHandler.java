@@ -8,6 +8,7 @@ import gui.GameTimer;
 import gui.MineCounter;
 import gui.SmileyButton;
 import image.ImageLoader;
+import mediator.EnvSolverMediator;
 import util.BoardInitializer;
 
 public class GameEventHandler implements GameBoardEventListener, SmileyEventListener{
@@ -212,5 +213,11 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 		mineCounter.reset();
 		gameTimer.stop();
 		gameTimer.resetTime();
+	}
+	@Override
+	public void smileyRightMouseClicked() {
+		// TODO Auto-generated method stub
+		EnvSolverMediator mediator = new EnvSolverMediator(gameBoard, mineCounter);
+		mediator.solve();
 	}
 }

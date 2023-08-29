@@ -4,7 +4,7 @@ import java.awt.AWTException;
 import java.awt.Point;
 import java.awt.Robot;
 
-public class Autioclicker {
+public class AutoClicker {
 	public static boolean click(Point p, int offsetX, int offsetY, int inputAction) {
 		try {
 			Robot robot = new Robot();
