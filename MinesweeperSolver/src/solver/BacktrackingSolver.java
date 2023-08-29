@@ -68,8 +68,11 @@ public class BacktrackingSolver {
 					< Math.min(1 - targetField.getProbabilityOfMine(), targetField.getProbabilityOfMine()))
 				targetField = allUnknownFieldsOfInterest[i];
 		
-		if (targetField.getProbabilityOfMine() <= 0.5)
+		if (targetField.getProbabilityOfMine() <= 0.5) {
+			System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
+		}
+		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
 	}
 	
@@ -86,6 +89,7 @@ public class BacktrackingSolver {
 				if (solutionField.isAssumedMine())
 					solutionField.setNumSolutions(solutionField.getNumSolutions() + 1);
 			totalNumSolutions += 1;
+			System.out.println("Solution found.");
 			return;
 		}
 		

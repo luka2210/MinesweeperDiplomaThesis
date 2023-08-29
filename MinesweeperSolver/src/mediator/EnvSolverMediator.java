@@ -26,9 +26,6 @@ public class EnvSolverMediator {
 	
 	private Timer timer;
 	
-	private volatile boolean solving = false;
-	private volatile boolean done = false;
-	
 	public EnvSolverMediator(GameBoard gameBoard, MineCounter mineCounter) {
 		super();
 		this.gameBoard = gameBoard;
@@ -43,16 +40,12 @@ public class EnvSolverMediator {
 		
 		timer = new Timer();
 		TimerTask task = getTimerTask();
-		timer.scheduleAtFixedRate(task, 0, DELAY);
+		timer.schedule(task, 0);
 	}
 	
-	private void step() {
-		solving = true;
-		
-		if (gameBoard.isGameOver() || gameBoard.isGameWon()) {
-			done = true;
+	private synchronized void step() {
+		if (gameBoard.isGameOver() || gameBoard.isGameWon()) 
 			return;
-		}
 			
 		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
 			
@@ -79,28 +72,18 @@ public class EnvSolverMediator {
 		Point fieldLocation = targetField.getFieldFrame().getLocationOnScreen();
 		boolean clicked = AutoClicker.click(fieldLocation, GameBoard.FIELD_HEIGHT / 2, GameBoard.FIELD_WIDTH / 2, inputEvent);
 		
-		done = !clicked;
-		solving = false;
+		if (!clicked)
+			return;
+		
+		timer.schedule(getTimerTask(), DELAY);
 	}
 	
 	private TimerTask getTimerTask() {
 		return new TimerTask() {
 			@Override
 			public void run() {
-				if (done) {
-					destroyTimer();
-					return;
-				}
-				if (solving) 
-					return;
 				step();
 			}	
 		};
-	}
-	
-	private void destroyTimer() {
-		timer.cancel();
-		timer.purge();
-		System.out.println("Timer destroyed");
 	}
 }
