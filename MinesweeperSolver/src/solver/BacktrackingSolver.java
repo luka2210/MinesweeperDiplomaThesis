@@ -1,6 +1,7 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BacktrackingSolver {
 	int numRows, numColumns, numMines;
@@ -39,7 +40,15 @@ public class BacktrackingSolver {
 		// get all fields of interest in an array
 		allOpenFieldsOfInterest = getAllOpenFieldsOfInterest(fields);
 		allUnknownFieldsOfInterest = getAllUnknownFieldsOfInterest(fields);
-		totalNumSolutions = 0;
+		
+		// if there are no fields of interest open random field
+		if (allOpenFieldsOfInterest.length == 0) {
+			Field[] allMarginalFields = getAllMarginalFields(fields);
+			Random rand = new Random();
+			int index = rand.nextInt(allMarginalFields.length);
+			Field marginalField = allMarginalFields[index];
+			return new Action(marginalField.getRow(), marginalField.getCol(), Click.LEFT);
+		}
 		
 		// check for solution
 		for (var field: allOpenFieldsOfInterest) {
@@ -56,7 +65,11 @@ public class BacktrackingSolver {
 			}
 		}
 		
+		//split into batches
+		
 		// find all solutions
+		totalNumSolutions = 0;
+		
 		findAllPossibleSolutions(0, minesLeft);
 		
 		for (var field: allUnknownFieldsOfInterest)
@@ -123,6 +136,15 @@ public class BacktrackingSolver {
 				if (fields[i][j].isOpenFieldOfInterest())
 					allOpenFieldsOfInterest.add(fields[i][j]);
 		return allOpenFieldsOfInterest.toArray(new Field[allOpenFieldsOfInterest.size()]);
+	}
+	
+	private Field[] getAllMarginalFields(Field[][] fields) {
+		ArrayList<Field> allMarginalFields = new ArrayList<Field>();
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+				if (fields[i][j].isUnknown() && !fields[i][j].isUnknownFieldOfInterest())
+					allMarginalFields.add(fields[i][j]);
+		return allMarginalFields.toArray(new Field[allMarginalFields.size()]);
 	}
 	
 	private int ngbMinesLeft(Field field) {
