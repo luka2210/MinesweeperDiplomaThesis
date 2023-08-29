@@ -63,12 +63,17 @@ public class BacktrackingSolver {
 			field.setProbabilityOfMine(totalNumSolutions);
 		
 		Field targetField = allUnknownFieldsOfInterest[0];
-		for (int i = 1; i < allUnknownFieldsOfInterest.length; i++)
-			if (Math.min(1 - allUnknownFieldsOfInterest[i].getProbabilityOfMine(), allUnknownFieldsOfInterest[i].getProbabilityOfMine()) 
-					< Math.min(1 - targetField.getProbabilityOfMine(), targetField.getProbabilityOfMine()))
-				targetField = allUnknownFieldsOfInterest[i];
+		for (var field: allUnknownFieldsOfInterest) {
+			float targetAbsProbability = absoluteProbability(targetField.getProbabilityOfMine());
+			float otherAbsProbability = absoluteProbability(field.getProbabilityOfMine());
+			if (targetAbsProbability < otherAbsProbability)
+				targetField = field;
+			if (targetAbsProbability == otherAbsProbability 
+					&& targetField.getOpenNgbsOfInterest().length < field.getOpenNgbsOfInterest().length)
+				targetField = field;
+		}
 		
-		if (targetField.getProbabilityOfMine() <= 0.5) {
+		if (targetField.getProbabilityOfMine() < 0.5) {
 			System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
 		}
@@ -167,5 +172,9 @@ public class BacktrackingSolver {
 				if (i >= 0 && i < numRows && j >= 0 && j < numColumns && fields[i][j] != field) 
 					neighbors.add(fields[i][j]);
 		field.setNgbFields(neighbors.toArray(new Field[neighbors.size()]));
+	}
+	
+	private static float absoluteProbability(float probability) {
+		return Math.min(1 - probability, probability);
 	}
 }
