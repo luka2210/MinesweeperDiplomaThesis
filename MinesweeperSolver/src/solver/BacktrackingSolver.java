@@ -11,6 +11,8 @@ public class BacktrackingSolver {
 	Field[] allUnknownFieldsOfInterest;
 	Field[] allOpenFieldsOfInterest;
 	
+	ArrayList<Field> unknownFieldsBatch;
+	
 	public BacktrackingSolver(int numRows, int numColumns, int numMines) {
 		super();
 		this.numRows = numRows;
@@ -65,21 +67,34 @@ public class BacktrackingSolver {
 			}
 		}
 		
+		int lol = 10;
+		
 		//split into batches
+		for (var unknownField: allUnknownFieldsOfInterest)
+			if (!unknownField.isInBatch()) {
+				unknownFieldsBatch = new ArrayList<Field>();
+				formBatch(unknownField, unknownFieldsBatch);
+				
+				// find all solutions for the batch
+				totalNumSolutions = 0;
+				
+				betterRecursion(0, minesLeft);
+				
+				for (var field: unknownFieldsBatch)
+					field.setProbabilityOfMine(totalNumSolutions);
+			}
 		
-		// find all solutions
-		totalNumSolutions = 0;
 		
-		findAllPossibleSolutions(0, minesLeft);
-		
+		//print out values
 		for (var field: allUnknownFieldsOfInterest)
-			field.setProbabilityOfMine(totalNumSolutions);
+			System.out.print(field.getProbabilityOfMine() + " ");
+		System.out.println();
 		
 		Field targetField = allUnknownFieldsOfInterest[0];
 		for (var field: allUnknownFieldsOfInterest) {
 			float targetAbsProbability = absoluteProbability(targetField.getProbabilityOfMine());
 			float otherAbsProbability = absoluteProbability(field.getProbabilityOfMine());
-			if (targetAbsProbability < otherAbsProbability)
+			if (targetAbsProbability > otherAbsProbability)
 				targetField = field;
 			if (targetAbsProbability == otherAbsProbability 
 					&& targetField.getOpenNgbsOfInterest().length < field.getOpenNgbsOfInterest().length)
@@ -92,6 +107,70 @@ public class BacktrackingSolver {
 		}
 		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
+	}
+	
+	private void betterRecursion(int index, int minesLeft) {
+		if (minesLeft < 0)
+			return;
+		
+		if (index == unknownFieldsBatch.size()) {
+			for (Field field: unknownFieldsBatch)
+				if (field.isAssumedMine())
+					field.setNumSolutions(field.getNumSolutions() + 1);
+			totalNumSolutions += 1;
+			System.out.println("Solution found.");
+			return;
+		}
+		
+		Field field = unknownFieldsBatch.get(index);
+		field.setProcessed(true);
+		
+		// try putting a mine
+		field.setAssumedMine(true);
+		if (canBe(field)) 
+			betterRecursion(index + 1, minesLeft - 1);
+		field.setAssumedMine(false);
+		
+		if (canBe(field)) 
+			betterRecursion(index + 1, minesLeft);
+		
+		field.setProcessed(false);
+	}
+	
+	private boolean canBe(Field field) {
+		for (Field neighbor: field.getOpenNgbsOfInterest()) {
+			int ngbMines = ngbMinesLeft(neighbor);
+			int ngbUnprocessed = ngbUnprocessedLeft(neighbor);
+			if (ngbMines < 0 || ngbUnprocessed < ngbMines)
+				return false;
+		}
+		return true;
+	}
+	
+	private int ngbMinesLeft(Field field) {
+		int counter = 0;
+		for (var ngbField: field.getNgbFields())
+			if (ngbField.isMarked() || ngbField.isAssumedMine())
+				counter++;
+		return field.getNgbMines() - counter;
+	}
+	
+	private int ngbUnprocessedLeft(Field field) {
+		int counter = 0;
+		for (var ngbField: field.getUnknownNbgsOfInterest())
+			if (!ngbField.isProcessed())
+				counter++;
+		return counter;
+	}
+	
+	private void formBatch(Field unknownField, ArrayList<Field> unknownFieldBatch) {
+		unknownField.setInBatch(true);
+		unknownFieldBatch.add(unknownField);
+		
+		for (Field ngbOpenField: unknownField.getOpenNgbsOfInterest())
+			for (Field ngbUnknownField: ngbOpenField.getUnknownNbgsOfInterest())
+				if (!ngbUnknownField.isInBatch()) 
+					formBatch(ngbUnknownField, unknownFieldBatch);
 	}
 	
 	private void findAllPossibleSolutions(int index, int minesLeft) {
@@ -145,14 +224,6 @@ public class BacktrackingSolver {
 				if (fields[i][j].isUnknown() && !fields[i][j].isUnknownFieldOfInterest())
 					allMarginalFields.add(fields[i][j]);
 		return allMarginalFields.toArray(new Field[allMarginalFields.size()]);
-	}
-	
-	private int ngbMinesLeft(Field field) {
-		int counter = 0;
-		for (var ngbField: field.getNgbFields())
-			if (ngbField.isMarked() || ngbField.isAssumedMine())
-				counter++;
-		return field.getNgbMines() - counter;
 	}
 	
 	private void setNeighboringFieldsOfInterest(Field[][] fields, int row, int col) {

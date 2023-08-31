@@ -21,6 +21,10 @@ public class Field {
 	
 	private float probabilityOfMine;
 	
+	private boolean inBatch = false;
+	
+	private boolean processed = false;
+	
 	public Field(int row, int col, boolean unknown, boolean marked, int ngbMines) {
 		this.row = row;
 		this.col = col;
@@ -124,4 +128,22 @@ public class Field {
 	public void setProbabilityOfMine(float totalNumSolutions) {
 		this.probabilityOfMine = numSolutions / totalNumSolutions;
 	}
+
+	public boolean isInBatch() {
+		return inBatch;
+	}
+
+	public void setInBatch(boolean inBatch) {
+		this.inBatch = inBatch;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
+	}
+	
+	
 }
