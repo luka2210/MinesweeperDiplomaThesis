@@ -66,7 +66,7 @@ public class BacktrackingSolver {
 		for (var field: allUnknownFieldsOfInterest) {
 			float targetAbsProbability = absoluteProbability(targetField.getProbabilityOfMine());
 			float otherAbsProbability = absoluteProbability(field.getProbabilityOfMine());
-			if (targetAbsProbability < otherAbsProbability)
+			if (targetAbsProbability > otherAbsProbability)
 				targetField = field;
 			if (targetAbsProbability == otherAbsProbability 
 					&& targetField.getOpenNgbsOfInterest().length < field.getOpenNgbsOfInterest().length)
