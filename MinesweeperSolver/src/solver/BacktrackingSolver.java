@@ -172,32 +172,6 @@ public class BacktrackingSolver {
 					formBatch(ngbUnknownField, unknownFieldBatch);
 	}
 	
-	private void findAllPossibleSolutions(int index, int minesLeft) {
-		if (index == allUnknownFieldsOfInterest.length) {
-			if (minesLeft < 0)
-				return;
-			
-			for (Field openField: allOpenFieldsOfInterest) 
-				if (ngbMinesLeft(openField) != 0)
-					return;
-			
-			for (var solutionField: allUnknownFieldsOfInterest)
-				if (solutionField.isAssumedMine())
-					solutionField.setNumSolutions(solutionField.getNumSolutions() + 1);
-			totalNumSolutions += 1;
-			System.out.println("Solution found.");
-			return;
-		}
-		
-		Field unknownFieldOfInterest = allUnknownFieldsOfInterest[index];
-		
-		unknownFieldOfInterest.setAssumedMine(true);
-		findAllPossibleSolutions(index + 1, minesLeft - 1);
-		
-		unknownFieldOfInterest.setAssumedMine(false);
-		findAllPossibleSolutions(index + 1, minesLeft);
-	}
-	
 	private Field[] getAllUnknownFieldsOfInterest(Field[][] fields) {
 		ArrayList<Field> allUnknownFieldsOfInterest = new ArrayList<Field>();
 		for (int i = 0; i < numRows; i++)
