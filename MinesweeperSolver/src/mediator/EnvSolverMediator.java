@@ -30,22 +30,24 @@ public class EnvSolverMediator {
 		super();
 		this.gameBoard = gameBoard;
 		this.mineCounter = mineCounter;
-	}
-	
-	public void solve() {
+		
 		this.numRows = gameBoard.getNumRows();
 		this.numColumns = gameBoard.getNumColumns();
 		this.numMines = gameBoard.getNumMines();
 		this.solver = new BacktrackingSolver(numRows, numColumns, numMines);
 		
-		timer = new Timer();
-		TimerTask task = getTimerTask();
-		timer.schedule(task, 0);
+		this.timer = new Timer();
 	}
 	
-	private synchronized void step() {
+	public synchronized void solve() {
+		boolean keepSolving = step();
+		if (keepSolving)
+			timer.schedule(getTimerTask(), DELAY);
+	}
+	
+	private synchronized boolean step() {
 		if (gameBoard.isGameOver() || gameBoard.isGameWon()) 
-			return;
+			return false;
 			
 		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
 			
@@ -72,17 +74,14 @@ public class EnvSolverMediator {
 		Point fieldLocation = targetField.getFieldFrame().getLocationOnScreen();
 		boolean clicked = AutoClicker.click(fieldLocation, GameBoard.FIELD_HEIGHT / 2, GameBoard.FIELD_WIDTH / 2, inputEvent);
 		
-		if (!clicked)
-			return;
-		
-		timer.schedule(getTimerTask(), DELAY);
+		return clicked;
 	}
 	
 	private TimerTask getTimerTask() {
 		return new TimerTask() {
 			@Override
 			public void run() {
-				step();
+				solve();
 			}	
 		};
 	}

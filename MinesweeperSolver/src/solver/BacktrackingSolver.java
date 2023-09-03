@@ -44,11 +44,10 @@ public class BacktrackingSolver {
 		
 		// if there are no fields of interest open random field
 		if (allOpenFieldsOfInterest.length == 0) {
-			Field[] allMarginalFields = getAllMarginalFields(fields);
-			Random rand = new Random();
-			int index = rand.nextInt(allMarginalFields.length);
-			Field marginalField = allMarginalFields[index];
-			return new Action(marginalField.getRow(), marginalField.getCol(), Click.LEFT);
+			Field marginalField = getRandomMarginalField(fields);
+			int row = marginalField.getRow();
+			int col = marginalField.getCol();
+			return new Action(row, col, Click.LEFT);
 		}
 		
 		// check for solution
@@ -65,8 +64,6 @@ public class BacktrackingSolver {
 				return new Action(row, col, Click.RIGHT);
 			}
 		}
-		
-		int lol = 10;
 		
 		//split into batches
 		for (var unknownField: allUnknownFieldsOfInterest)
@@ -190,13 +187,16 @@ public class BacktrackingSolver {
 		return allOpenFieldsOfInterest.toArray(new Field[allOpenFieldsOfInterest.size()]);
 	}
 	
-	private Field[] getAllMarginalFields(Field[][] fields) {
+	private Field getRandomMarginalField(Field[][] fields) {
 		ArrayList<Field> allMarginalFields = new ArrayList<Field>();
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
 				if (fields[i][j].isUnknown() && !fields[i][j].isUnknownFieldOfInterest())
 					allMarginalFields.add(fields[i][j]);
-		return allMarginalFields.toArray(new Field[allMarginalFields.size()]);
+		Random rand = new Random();
+		int index = rand.nextInt(allMarginalFields.size());
+		Field marginalField = allMarginalFields.get(index);
+		return marginalField;
 	}
 	
 	private void setNeighboringFieldsOfInterest(Field[][] fields, int row, int col) {
