@@ -3,8 +3,8 @@ package solver;
 public class Field {
 	
 	private int row, col;
-	
 	private boolean unknown;
+	
 	private boolean marked;
 	private int ngbMines;
 	
@@ -21,12 +21,10 @@ public class Field {
 	
 	private float probabilityOfMine;
 	
-	public Field(int row, int col, boolean unknown, boolean marked, int ngbMines) {
+	public Field(int row, int col, boolean unknown) {
 		this.row = row;
 		this.col = col;
 		this.unknown = unknown;
-		this.marked = marked;
-		this.ngbMines = ngbMines;
 	}
 
 	public boolean isUnknown() {

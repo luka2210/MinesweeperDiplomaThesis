@@ -9,13 +9,13 @@ public class InputConverter {
 		
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++) {
-				GameField gameField = gameFields[i][j];
-				int row = gameField.getRow();
-				int col = gameField.getCol();
-				boolean unknown = !gameField.isOpened();
-				boolean marked = gameField.isMarked();
-				int ngbMines = gameField.getNgbMines();
-				fields[i][j] = new Field(row, col, unknown, marked, ngbMines);
+				boolean unknown = !gameFields[i][j].isOpened();
+				fields[i][j] = new Field(i, j, unknown);
+				
+				if (unknown)
+					fields[i][j].setMarked(gameFields[i][j].isMarked());
+				else
+					fields[i][j].setNgbMines(gameFields[i][j].getNgbMines());
 			}
 		
 		return fields;
