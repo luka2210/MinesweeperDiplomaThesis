@@ -19,7 +19,6 @@ public class BacktrackingSolver {
 		this.numColumns = numColumns;
 		this.numMines = numMines;
 	}
-	
 	public Action getAction(Field[][] fields, int minesLeft, boolean firstClick) {
 		if (firstClick)
 			return new Action(numRows / 2, numColumns / 2, Click.LEFT);
