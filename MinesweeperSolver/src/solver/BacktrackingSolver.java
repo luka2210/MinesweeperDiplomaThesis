@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BacktrackingSolver {
-	int numRows, numColumns, numMines;
+	private int numRows, numColumns, numMines;
 	
-	int totalBatchSolutions;
+	private int totalBatchSolutions;
 
-	Field[][] fields;
-	Field[] allUnknownFieldsOfInterest;
-	Field[] allOpenFieldsOfInterest;
+	private Field[][] fields;
+	private Field[] allUnknownFieldsOfInterest;
+	private Field[] allOpenFieldsOfInterest;
 	
 	public BacktrackingSolver(int numRows, int numColumns, int numMines) {
 		super();
