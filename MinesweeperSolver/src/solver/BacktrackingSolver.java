@@ -6,12 +6,11 @@ import java.util.Random;
 public class BacktrackingSolver {
 	int numRows, numColumns, numMines;
 	
-	int totalNumSolutions;
+	int totalBatchSolutions;
 
+	Field[][] fields;
 	Field[] allUnknownFieldsOfInterest;
 	Field[] allOpenFieldsOfInterest;
-	
-	ArrayList<Field> unknownFieldsBatch;
 	
 	public BacktrackingSolver(int numRows, int numColumns, int numMines) {
 		super();
@@ -20,6 +19,10 @@ public class BacktrackingSolver {
 		this.numMines = numMines;
 	}
 	public Action getAction(Field[][] fields, int minesLeft, boolean firstClick) {
+		this.fields = fields;
+		
+		
+		// if first click click on middle field
 		if (firstClick)
 			return new Action(numRows / 2, numColumns / 2, Click.LEFT);
 		
@@ -68,16 +71,16 @@ public class BacktrackingSolver {
 		//split into batches
 		for (var unknownField: allUnknownFieldsOfInterest)
 			if (!unknownField.isInBatch()) {
-				unknownFieldsBatch = new ArrayList<Field>();
+				// create a batch
+				ArrayList<Field> unknownFieldsBatch = new ArrayList<Field>();
 				formBatch(unknownField, unknownFieldsBatch);
 				
 				// find all solutions for the batch
-				totalNumSolutions = 0;
-				
-				betterRecursion(0, minesLeft);
+				totalBatchSolutions = 0;
+				betterRecursion(unknownFieldsBatch, 0, minesLeft);
 				
 				for (var field: unknownFieldsBatch)
-					field.setProbabilityOfMine(totalNumSolutions);
+					field.setProbabilityOfMine(totalBatchSolutions);
 			}
 		
 		
@@ -105,7 +108,7 @@ public class BacktrackingSolver {
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
 	}
 	
-	private void betterRecursion(int index, int minesLeft) {
+	private void betterRecursion(ArrayList<Field> unknownFieldsBatch, int index, int minesLeft) {
 		if (minesLeft < 0)
 			return;
 		
@@ -113,8 +116,9 @@ public class BacktrackingSolver {
 			for (Field field: unknownFieldsBatch)
 				if (field.isAssumedMine())
 					field.setNumSolutions(field.getNumSolutions() + 1);
-			totalNumSolutions += 1;
-			System.out.println("Solution found.");
+			totalBatchSolutions += 1;
+			System.out.println("Solution " + totalBatchSolutions);
+			printSolution(unknownFieldsBatch);
 			return;
 		}
 		
@@ -124,11 +128,11 @@ public class BacktrackingSolver {
 		// try putting a mine
 		field.setAssumedMine(true);
 		if (canBe(field)) 
-			betterRecursion(index + 1, minesLeft - 1);
+			betterRecursion(unknownFieldsBatch, index + 1, minesLeft - 1);
 		field.setAssumedMine(false);
 		
 		if (canBe(field)) 
-			betterRecursion(index + 1, minesLeft);
+			betterRecursion(unknownFieldsBatch, index + 1, minesLeft);
 		
 		field.setProcessed(false);
 	}
@@ -242,5 +246,24 @@ public class BacktrackingSolver {
 	
 	private static float absoluteProbability(float probability) {
 		return Math.min(1 - probability, probability);
+	}
+	
+	private void printSolution(ArrayList<Field> unknownFieldsBatch) {
+		for (int i = 0; i < fields.length; i++) {
+			for (int j = 0; j < fields.length; j++) {
+				if (unknownFieldsBatch.contains(fields[i][j]))
+					if (fields[i][j].isAssumedMine())
+						System.out.print("* ");
+					else 
+						System.out.print("_ ");
+				else if (fields[i][j].isMarked())
+						System.out.print("M ");
+				else if (fields[i][j].isUnknown())
+						System.out.print("U ");
+				else
+					System.out.print(fields[i][j].getNgbMines() + " ");
+			}
+			System.out.println();
+		}
 	}
 }
