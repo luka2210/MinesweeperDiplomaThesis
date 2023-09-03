@@ -21,7 +21,6 @@ public class BacktrackingSolver {
 	public Action getAction(Field[][] fields, int minesLeft, boolean firstClick) {
 		this.fields = fields;
 		
-		
 		// if first click click on middle field
 		if (firstClick)
 			return new Action(numRows / 2, numColumns / 2, Click.LEFT);
@@ -74,6 +73,7 @@ public class BacktrackingSolver {
 				// create a batch
 				ArrayList<Field> unknownFieldsBatch = new ArrayList<Field>();
 				formBatch(unknownField, unknownFieldsBatch);
+				System.out.println("BatchSize: " + unknownFieldsBatch.size());
 				
 				// find all solutions for the batch
 				totalBatchSolutions = 0;
@@ -81,6 +81,7 @@ public class BacktrackingSolver {
 				
 				for (var field: unknownFieldsBatch)
 					field.setProbabilityOfMine(totalBatchSolutions);
+				System.out.println();
 			}
 		
 		
@@ -89,22 +90,14 @@ public class BacktrackingSolver {
 			System.out.print(field.getProbabilityOfMine() + " ");
 		System.out.println();
 		
-		Field targetField = allUnknownFieldsOfInterest[0];
-		for (var field: allUnknownFieldsOfInterest) {
-			float targetAbsProbability = absoluteProbability(targetField.getProbabilityOfMine());
-			float otherAbsProbability = absoluteProbability(field.getProbabilityOfMine());
-			if (targetAbsProbability > otherAbsProbability)
-				targetField = field;
-			if (targetAbsProbability == otherAbsProbability 
-					&& targetField.getOpenNgbsOfInterest().length < field.getOpenNgbsOfInterest().length)
-				targetField = field;
-		}
+		// find target field
+		Field targetField = getTargetField();
 		
-		if (targetField.getProbabilityOfMine() < 0.5) {
-			System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
+		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine." + "\n" + "\n");
+		
+		if (targetField.getProbabilityOfMine() < 0.5) 
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
-		}
-		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine.");
+		
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
 	}
 	
@@ -127,17 +120,17 @@ public class BacktrackingSolver {
 		
 		// try putting a mine
 		field.setAssumedMine(true);
-		if (canBe(field)) 
+		if (checkOpenNeighbors(field)) 
 			betterRecursion(unknownFieldsBatch, index + 1, minesLeft - 1);
 		field.setAssumedMine(false);
 		
-		if (canBe(field)) 
+		if (checkOpenNeighbors(field)) 
 			betterRecursion(unknownFieldsBatch, index + 1, minesLeft);
 		
 		field.setProcessed(false);
 	}
 	
-	private boolean canBe(Field field) {
+	private boolean checkOpenNeighbors(Field field) {
 		for (Field neighbor: field.getOpenNgbsOfInterest()) {
 			int ngbMines = ngbMinesLeft(neighbor);
 			int ngbUnprocessed = ngbUnprocessedLeft(neighbor);
@@ -248,9 +241,23 @@ public class BacktrackingSolver {
 		return Math.min(1 - probability, probability);
 	}
 	
+	private Field getTargetField() {
+		Field targetField = allUnknownFieldsOfInterest[0];
+		for (var field: allUnknownFieldsOfInterest) {
+			float targetAbsProbability = absoluteProbability(targetField.getProbabilityOfMine());
+			float otherAbsProbability = absoluteProbability(field.getProbabilityOfMine());
+			if (targetAbsProbability > otherAbsProbability)
+				targetField = field;
+			if (targetAbsProbability == otherAbsProbability 
+					&& targetField.getOpenNgbsOfInterest().length < field.getOpenNgbsOfInterest().length)
+				targetField = field;
+		}
+		return targetField;
+	}
+	
 	private void printSolution(ArrayList<Field> unknownFieldsBatch) {
-		for (int i = 0; i < fields.length; i++) {
-			for (int j = 0; j < fields.length; j++) {
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
 				if (unknownFieldsBatch.contains(fields[i][j]))
 					if (fields[i][j].isAssumedMine())
 						System.out.print("* ");
