@@ -43,17 +43,16 @@ public class EnvSolverMediator {
 		if (gameBoard.isGameOver() || gameBoard.isGameWon()) 
 			return;
 		
-		boolean keepSolving = makeMove();
+		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
+		Action action = solver.getAction(fields, mineCounter.minesLeft(), gameBoard.isFirstClick());
+		GameField targetField = gameBoard.getFields()[action.getRow()][action.getCol()];
+		
+		boolean keepSolving = makeMove(targetField, action.getClick());
 		if (keepSolving)
-			timer.schedule(getTimerTask(), DELAY);
+			timer.schedule(executeSolveAgain(), DELAY);
 	}
 	
-	private synchronized boolean makeMove() {
-		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
-			
-		Action action = solver.getAction(fields, mineCounter.minesLeft(), gameBoard.isFirstClick());
-			
-		Click click = action.getClick();
+	private synchronized boolean makeMove(GameField targetField, Click click) {
 		int inputEvent;
 		switch (click) {
 		case LEFT:
@@ -70,14 +69,13 @@ public class EnvSolverMediator {
 			break;
 		}
 			
-		GameField targetField = gameBoard.getFields()[action.getRow()][action.getCol()];
 		Point fieldLocation = targetField.getFieldFrame().getLocationOnScreen();
 		boolean clicked = AutoClicker.click(fieldLocation, GameBoard.FIELD_HEIGHT / 2, GameBoard.FIELD_WIDTH / 2, inputEvent);
 		
 		return clicked;
 	}
 	
-	private TimerTask getTimerTask() {
+	private TimerTask executeSolveAgain() {
 		return new TimerTask() {
 			@Override
 			public void run() {
