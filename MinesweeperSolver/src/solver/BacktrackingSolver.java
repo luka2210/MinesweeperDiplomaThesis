@@ -185,7 +185,7 @@ public class BacktrackingSolver {
 		ArrayList<Field> allMarginalFields = new ArrayList<Field>();
 		for (int i = 0; i < numRows; i++)
 			for (int j = 0; j < numColumns; j++)
-				if (fields[i][j].isUnknown() && !fields[i][j].isUnknownFieldOfInterest())
+				if (fields[i][j].isUnknown() && !fields[i][j].isUnknownFieldOfInterest() && !fields[i][j].isMarked())
 					allMarginalFields.add(fields[i][j]);
 		Random rand = new Random();
 		int index = rand.nextInt(allMarginalFields.size());
