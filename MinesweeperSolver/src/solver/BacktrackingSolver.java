@@ -73,48 +73,64 @@ public class BacktrackingSolver {
 				// create a batch
 				ArrayList<Field> unknownFieldsBatch = new ArrayList<Field>();
 				formBatch(unknownField, unknownFieldsBatch);
-				System.out.println("BatchSize: " + unknownFieldsBatch.size());
+				
+				long tick = System.currentTimeMillis();
 				
 				// find all solutions for the batch
 				totalBatchSolutions = 0;
 				findAllCombinations(unknownFieldsBatch, 0, minesLeft);
 				
+				long tock = System.currentTimeMillis();
+				
+				double seconds = (tock - tick) / 1000.0;
+				
+				if (unknownFieldsBatch.size() > 50) {
+				System.out.println("BatchSize: " + unknownFieldsBatch.size());
+				System.out.println("Time of execution: " + seconds + "seconds");
+				System.out.println("Number of solutions: " + totalBatchSolutions);
+				System.out.println();
+				}
+				
 				for (var field: unknownFieldsBatch)
 					field.setProbabilityOfMine(totalBatchSolutions);
-				System.out.println();
+				//System.out.println();
 			}
 		
 		
 		// print probabilities of mine for all unknown fields of interest
-		printProbabilities();
+		// printProbabilities();
 		
 		// find target field
 		Field targetField = getTargetField();
 		
-		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine." + "\n" + "\n");
+		//System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine." + "\n" + "\n");
 		
 		if (targetField.getProbabilityOfMine() < 0.5) 
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
 	}
 	
-	private void findAllCombinations(ArrayList<Field> unknownFieldsBatch, int index, int minesLeft) {
+	private void findAllCombinations(ArrayList<Field> unknownFieldsBatch, 
+			int index, int minesLeft) {
+		//
 		if (minesLeft < 0)
 			return;
 		
+		//
 		if (index == unknownFieldsBatch.size()) {
 			for (Field field: unknownFieldsBatch)
 				if (field.isAssumedMine())
 					field.setNumSolutions(field.getNumSolutions() + 1);
 			totalBatchSolutions += 1;
-			System.out.println("Solution " + totalBatchSolutions);
-			printSolution(unknownFieldsBatch);
+			//System.out.println("Solution " + totalBatchSolutions);
+			//printSolution(unknownFieldsBatch);
 			return;
-		}
+		} 
 		
 		Field field = unknownFieldsBatch.get(index);
-		field.setProcessed(true);
 		
+		
+		field.setProcessed(true);
 		// try putting a mine
 		field.setAssumedMine(true);
 		if (checkOpenNeighbors(field)) 

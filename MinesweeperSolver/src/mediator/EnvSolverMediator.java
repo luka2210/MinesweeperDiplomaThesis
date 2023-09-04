@@ -40,15 +40,15 @@ public class EnvSolverMediator {
 	}
 	
 	public synchronized void solve() {
-		boolean keepSolving = step();
+		if (gameBoard.isGameOver() || gameBoard.isGameWon()) 
+			return;
+		
+		boolean keepSolving = makeMove();
 		if (keepSolving)
 			timer.schedule(getTimerTask(), DELAY);
 	}
 	
-	private synchronized boolean step() {
-		if (gameBoard.isGameOver() || gameBoard.isGameWon()) 
-			return false;
-			
+	private synchronized boolean makeMove() {
 		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
 			
 		Action action = solver.getAction(fields, mineCounter.minesLeft(), gameBoard.isFirstClick());
