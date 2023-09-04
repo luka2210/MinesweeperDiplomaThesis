@@ -21,7 +21,7 @@ public class BacktrackingSolver {
 	public Action getAction(Field[][] fields, int minesLeft, boolean firstClick) {
 		this.fields = fields;
 		
-		// if first click click on middle field
+		// if first click then click on middle field
 		if (firstClick)
 			return new Action(numRows / 2, numColumns / 2, Click.LEFT);
 		
@@ -77,7 +77,7 @@ public class BacktrackingSolver {
 				
 				// find all solutions for the batch
 				totalBatchSolutions = 0;
-				betterRecursion(unknownFieldsBatch, 0, minesLeft);
+				findAllCombinations(unknownFieldsBatch, 0, minesLeft);
 				
 				for (var field: unknownFieldsBatch)
 					field.setProbabilityOfMine(totalBatchSolutions);
@@ -85,10 +85,8 @@ public class BacktrackingSolver {
 			}
 		
 		
-		//print out values
-		for (var field: allUnknownFieldsOfInterest)
-			System.out.print(field.getProbabilityOfMine() + " ");
-		System.out.println();
+		// print probabilities of mine for all unknown fields of interest
+		printProbabilities();
 		
 		// find target field
 		Field targetField = getTargetField();
@@ -97,11 +95,10 @@ public class BacktrackingSolver {
 		
 		if (targetField.getProbabilityOfMine() < 0.5) 
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
-		
 		return new Action(targetField.getRow(), targetField.getCol(), Click.RIGHT);
 	}
 	
-	private void betterRecursion(ArrayList<Field> unknownFieldsBatch, int index, int minesLeft) {
+	private void findAllCombinations(ArrayList<Field> unknownFieldsBatch, int index, int minesLeft) {
 		if (minesLeft < 0)
 			return;
 		
@@ -121,11 +118,11 @@ public class BacktrackingSolver {
 		// try putting a mine
 		field.setAssumedMine(true);
 		if (checkOpenNeighbors(field)) 
-			betterRecursion(unknownFieldsBatch, index + 1, minesLeft - 1);
+			findAllCombinations(unknownFieldsBatch, index + 1, minesLeft - 1);
 		field.setAssumedMine(false);
 		
 		if (checkOpenNeighbors(field)) 
-			betterRecursion(unknownFieldsBatch, index + 1, minesLeft);
+			findAllCombinations(unknownFieldsBatch, index + 1, minesLeft);
 		
 		field.setProcessed(false);
 	}
@@ -272,5 +269,10 @@ public class BacktrackingSolver {
 			}
 			System.out.println();
 		}
+	}
+	
+	private void printProbabilities() {
+		for (var field: allUnknownFieldsOfInterest) 
+			System.out.println("(" + field.getRow() + ", " + field.getCol() + ") " + field.getProbabilityOfMine() * 100 + "%");
 	}
 }
