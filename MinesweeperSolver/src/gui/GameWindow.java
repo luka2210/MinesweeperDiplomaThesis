@@ -6,7 +6,7 @@ import event.handler.GameEventHandler;
 
 public class GameWindow {
 	public static final int UPPER_PANEL_HEIGHT = 60;
-	public static final int OS_SPECIFIC_HEIGHT_OFFSET = 28;
+	public static final int OS_SPECIFIC_HEIGHT_OFFSET = 29;
 
 	private int framePosX, framePosY;
 	private int frameHeight, frameWidth;
@@ -49,7 +49,7 @@ public class GameWindow {
 		frame = new JFrame("Minesweeper");
 		frame.setBounds(framePosX, framePosY, frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setResizable(false);
+		//frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		frame.add(gameBoard.getPanel());

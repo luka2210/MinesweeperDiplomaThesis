@@ -46,7 +46,7 @@ public class EnvSolverMediator {
 		Field[][] fields = InputConverter.getFields(gameBoard.getFields(), numRows, numColumns);
 		Action action = solver.getAction(fields, mineCounter.minesLeft(), gameBoard.isFirstClick());
 		GameField targetField = gameBoard.getFields()[action.getRow()][action.getCol()];
-		
+
 		boolean keepSolving = makeMove(targetField, action.getClick());
 		if (keepSolving)
 			timer.schedule(executeSolveAgain(), DELAY);
@@ -68,10 +68,9 @@ public class EnvSolverMediator {
 			inputEvent = InputEvent.BUTTON1_DOWN_MASK;
 			break;
 		}
-			
+
 		Point fieldLocation = targetField.getFieldFrame().getLocationOnScreen();
 		boolean clicked = AutoClicker.click(fieldLocation, GameBoard.FIELD_HEIGHT / 2, GameBoard.FIELD_WIDTH / 2, inputEvent);
-		
 		return clicked;
 	}
 	
