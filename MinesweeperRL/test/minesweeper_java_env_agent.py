@@ -41,6 +41,12 @@ SMILEY_CONFIDENCES = {
     'game_won': 0.95
 }
 
+BOARD_CONFIDENCES = {
+    'beginner': 0.95,
+    'intermediate': 0.95,
+    'expert': 0.95
+}
+
 class MinesweeperAgentWeb(object):
     def __init__(self, model):
         self.mode, self.loc, self.dims = self.get_loc()
@@ -58,7 +64,8 @@ class MinesweeperAgentWeb(object):
         '''
 
         modes = {'beginner':(9,9,81), 'intermediate':(16,16,256), 'expert':(16,30,480)}
-        boards = {mode: pg.locateOnScreen(f'{IMGS}/{mode}.png') for mode in modes.keys()}
+        boards = {mode: pg.locateOnScreen(f'{IMGS}/{mode}.png', grayscale=True,
+                                          confidence=BOARD_CONFIDENCES[mode]) for mode in modes.keys()}
 
         assert boards != {'beginner':None, 'intermediate':None, 'expert':None},\
             'Minesweeper board not detected on screen'
