@@ -155,7 +155,9 @@ class MinesweeperAgentWeb(object):
         return game_over is not None or game_won is not None
 
     def step(self, action_index):
-        pg.click(self.board[action_index]['coord'])
+        coords = self.board[action_index]['coord']
+        center_x , center_y = coords[0] + 12, coords[1] + 12
+        pg.click(center_x, center_y)
 
         done = self.check_if_done()
 
