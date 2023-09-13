@@ -37,15 +37,8 @@ TILES2 = {
 }
 
 SMILEY_CONFIDENCES = {
-    'reset': 0.95,
-    'oof': 0.95,
-    'gg': 0.95
-}
-
-SMILEY_STATES = {
-    'reset': 'reset',
-    'oof': 'oof',
-    'gg': 'gg'
+    'game_over': 0.95,
+    'game_won': 0.95
 }
 
 class MinesweeperAgentWeb(object):
@@ -154,10 +147,10 @@ class MinesweeperAgentWeb(object):
         return move
 
     def check_if_done(self):
-        game_over = pg.locateOnScreen(f'{IMGS}/{SMILEY_STATES["oof"]}.png',
-                                         confidence=SMILEY_CONFIDENCES['oof'], region=self.loc, grayscale=True)
-        game_won = pg.locateOnScreen(f'{IMGS}/{SMILEY_STATES["gg"]}.png',
-                                         confidence=SMILEY_CONFIDENCES['gg'], region=self.loc, grayscale=True)
+        game_over = pg.locateOnScreen(f'{IMGS}/game_over.png',
+                                         confidence=SMILEY_CONFIDENCES['game_over'], region=self.loc, grayscale=True)
+        game_won = pg.locateOnScreen(f'{IMGS}/game_won.png',
+                                         confidence=SMILEY_CONFIDENCES['game_won'], region=self.loc, grayscale=True)
 
         return game_over is not None or game_won is not None
 
