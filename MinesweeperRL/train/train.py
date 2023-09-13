@@ -23,6 +23,8 @@ def train():
 
     agent.save_weights("trained_nns/beginner_model.h5", overwrite=False)
 
+    agent.test(env, nb_episodes=10_000, visualize=False, verbose=1)
+    
 
 if __name__ == '__main__':
     train()
