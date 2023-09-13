@@ -21,10 +21,10 @@ def train():
 
     agent.fit(env, nb_steps=10_000_000, visualize=False, verbose=1)
 
-    agent.save_weights("trained_nns/beginner_model.h5", overwrite=False)
+    agent.save_weights("trained_models/beginner_model.h5", overwrite=False)
 
     agent.test(env, nb_episodes=10_000, visualize=False, verbose=1)
-    
+
 
 if __name__ == '__main__':
     train()
