@@ -1,7 +1,7 @@
 import argparse
 from tqdm import tqdm
 from tensorflow.keras.models import load_model
-from MinesweeperAgentWeb import *
+from minesweeper_java_env_agent import *
 
 def main():
     my_model = load_model('trained_models/beginner_model.h5')
