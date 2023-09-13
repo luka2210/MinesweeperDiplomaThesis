@@ -217,7 +217,7 @@ public class GameEventHandler implements GameBoardEventListener, SmileyEventList
 	@Override
 	public void smileyRightMouseClicked() {
 		// TODO Auto-generated method stub
-		EnvSolverMediator mediator = new EnvSolverMediator(gameBoard, mineCounter);
+		EnvSolverMediator mediator = new EnvSolverMediator(gameBoard, mineCounter, smiley, 1);
 		mediator.solve();
 	}
 }

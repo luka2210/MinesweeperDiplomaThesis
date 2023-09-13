@@ -84,26 +84,28 @@ public class BacktrackingSolver {
 				
 				double seconds = (tock - tick) / 1000.0;
 				
-				if (unknownFieldsBatch.size() > 50) {
-				System.out.println("BatchSize: " + unknownFieldsBatch.size());
-				System.out.println("Time of execution: " + seconds + "seconds");
-				System.out.println("Number of solutions: " + totalBatchSolutions);
-				System.out.println();
-				}
+				//if (unknownFieldsBatch.size() > 50) {
+					System.out.println("BatchSize: " + unknownFieldsBatch.size());
+					System.out.println("Time of execution: " + seconds + " seconds");
+					System.out.println("Number of solutions: " + totalBatchSolutions);
+					System.out.println();
+				//}
 				
 				for (var field: unknownFieldsBatch)
 					field.setProbabilityOfMine(totalBatchSolutions);
-				//System.out.println();
+				// print probabilities of mine for all unknown fields of interest
+				printProbabilities(unknownFieldsBatch);
+				System.out.println();
+				
 			}
 		
 		
-		// print probabilities of mine for all unknown fields of interest
-		// printProbabilities();
+
 		
 		// find target field
 		Field targetField = getTargetField();
 		
-		//System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine." + "\n" + "\n");
+		System.out.println("Best guess: " + targetField.getProbabilityOfMine() * 100 + "% mine." + "\n" + "\n");
 		
 		if (targetField.getProbabilityOfMine() < 0.5) 
 			return new Action(targetField.getRow(), targetField.getCol(), Click.LEFT);
@@ -287,8 +289,8 @@ public class BacktrackingSolver {
 		}
 	}
 	
-	private void printProbabilities() {
-		for (var field: allUnknownFieldsOfInterest) 
+	private void printProbabilities(ArrayList<Field> unknownFieldsBatch) {
+		for (var field: unknownFieldsBatch) 
 			System.out.println("(" + field.getRow() + ", " + field.getCol() + ") " + field.getProbabilityOfMine() * 100 + "%");
 	}
 }
