@@ -5,7 +5,6 @@ import pyautogui as pg
 ROOT = os.getcwd()
 IMGS = f'{ROOT}/test/pics'
 
-EPSILON = 0.01
 
 CONFIDENCES = {
     'unsolved': 0.99,
@@ -55,7 +54,6 @@ class MinesweeperAgentWeb(object):
         self.board = self.get_board(self.loc)
         self.state = self.get_state(self.board)
 
-        self.epsilon = EPSILON
         self.model = model
 
     def get_loc(self):
@@ -142,14 +140,9 @@ class MinesweeperAgentWeb(object):
         board = self.state.reshape(1, self.ntiles)
         unsolved = [i for i, x in enumerate(board[0]) if x==-0.125]
 
-        rand = np.random.random() # random value b/w 0 & 1
-
-        if rand < self.epsilon: # random move (explore)
-            move = np.random.choice(unsolved)
-        else:
-            moves = self.model.predict(np.reshape(self.state, (1, self.nrows, self.ncols, 1)))
-            moves[board!=-0.125] = np.min(moves)
-            move = np.argmax(moves)
+        moves = self.model.predict(np.reshape(self.state, (1, self.nrows, self.ncols, 1)))
+        moves[board!=-0.125] = np.min(moves)
+        move = np.argmax(moves)
 
         return move
 
