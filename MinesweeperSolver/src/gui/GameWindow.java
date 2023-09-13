@@ -49,7 +49,7 @@ public class GameWindow {
 		frame = new JFrame("Minesweeper");
 		frame.setBounds(framePosX, framePosY, frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//frame.setResizable(false);
+		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 		
 		frame.add(gameBoard.getPanel());
